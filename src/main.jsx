@@ -1,6 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
-import { AnimatePresence, MotionConfig, motion, useReducedMotion, useSpring } from 'motion/react'
+import { AnimatePresence, MotionConfig, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { startDotField } from './dotField'
 import products from './catalogue.json'
 import './styles.css'
@@ -185,27 +185,111 @@ function Footer() {
 }
 
 function ProductCard({ product }) {
-  const reduceMotion = useReducedMotion()
-  return <motion.article className="product-card" initial="rest" whileHover={reduceMotion ? undefined : 'hover'}>
+  return <article className="product-card">
     <div className="product-card__image">
-      <motion.img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} concept packshot`} loading="lazy" variants={{ rest: { y: 0, scale: 1, rotate: 0 }, hover: { y: -11, scale: 1.045, rotate: -1 } }} transition={{ type: 'spring', stiffness: 190, damping: 20 }} />
+      <img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} concept packshot`} loading="lazy" />
       <span className="product-card__status">Concept</span>
     </div>
     <div className="product-card__copy"><span>{product.family} · {product.id}</span><h3>{product.name}</h3><p>{product.description}</p></div>
+  </article>
+}
+
+function useMediaQuery(query) {
+  const [matches, setMatches] = React.useState(() => window.matchMedia(query).matches)
+  React.useEffect(() => {
+    const list = window.matchMedia(query)
+    const update = () => setMatches(list.matches)
+    update()
+    list.addEventListener('change', update)
+    return () => list.removeEventListener('change', update)
+  }, [query])
+  return matches
+}
+
+function CarouselCard({ product, index, count, progress, spacing, active }) {
+  const offset = useTransform(() => {
+    const wrapped = ((index - progress.get() * count) % count + count) % count
+    return wrapped > count / 2 ? wrapped - count : wrapped
+  })
+  const x = useTransform(offset, [-2, -1, 0, 1, 2], [-2 * spacing, -spacing, 0, spacing, 2 * spacing])
+  const y = useTransform(offset, [-2, -1, 0, 1, 2], [28, 14, 0, 14, 28])
+  const scale = useTransform(offset, [-2, -1, 0, 1, 2], [0.55, 0.8, 1, 0.8, 0.55])
+  const opacity = useTransform(offset, [-2, -1, 0, 1, 2], [0, 0.6, 1, 0.6, 0])
+  const zIndex = useTransform(() => Math.max(1, 3 - Math.round(Math.abs(offset.get()))))
+
+  return <motion.article className={`carousel-card${active === index ? ' is-active' : ''}`} style={{ x, y, scale, opacity, zIndex }}>
+    <div className="carousel-card__image"><img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} concept packshot`} loading="lazy" /></div>
+    <div className="carousel-card__copy"><span>{product.family} · {product.id}</span><h3>{product.name}</h3></div>
   </motion.article>
 }
 
+function FeaturedCarousel({ items, heading }) {
+  const trackRef = React.useRef(null)
+  const stageRef = React.useRef(null)
+  const [spacing, setSpacing] = React.useState(0)
+  const count = items.length
+
+  React.useLayoutEffect(() => {
+    const stage = stageRef.current
+    if (!stage) return
+    const measure = () => {
+      const card = stage.querySelector('.carousel-card')
+      if (card) setSpacing(card.offsetWidth * 0.78)
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(stage)
+    return () => observer.disconnect()
+  }, [items.length])
+
+  const { scrollYProgress } = useScroll({ target: trackRef, offset: ['start start', 'end end'] })
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.35 })
+  const [active, setActive] = React.useState(0)
+
+  useMotionValueEvent(progress, 'change', (value) => {
+    const next = Math.round(value * count) % count
+    setActive((current) => current === next ? current : next)
+  })
+
+  return <div className="featured-carousel" ref={trackRef} style={{ height: `calc(100svh + ${count * 26}svh)` }}>
+    <div className="featured-carousel__sticky">
+      <div className="featured-carousel__heading">{heading}</div>
+      <div className="featured-carousel__stage" ref={stageRef}>
+        {items.map((product, index) => <CarouselCard key={product.id} product={product} index={index} count={count} progress={progress} spacing={spacing} active={active} />)}
+      </div>
+      <div className="featured-carousel__meta"><span>{String(active + 1).padStart(2, '0')} / {String(count).padStart(2, '0')}</span><span className="featured-carousel__bar" aria-hidden="true"><motion.span style={{ scaleX: progress }} /></span><span>Keep scrolling</span></div>
+    </div>
+  </div>
+}
+
 function Featured() {
-  return <section className="featured section-space" aria-labelledby="featured-title"><div className="wrap"><div className="featured__heading"><div><p className="kicker">Selected range concepts</p><h2 id="featured-title">A closer look at the range.</h2></div><p>Editorial selections across floor care and laundry. These are concept visuals, not a sales ranking or confirmed product list.</p></div><div className="featured__grid">{products.filter((product) => product.featured).map((product) => <ProductCard key={product.id} product={product} />)}</div><a className="text-link featured__link" href="/products.html">View the full concept catalogue <Arrow /></a></div></section>
+  const isMobile = useMediaQuery('(max-width: 820px)')
+  const reduceMotion = useReducedMotion()
+  const featured = products.filter((product) => product.featured)
+  const showCarousel = isMobile && !reduceMotion
+  const heading = <div className="featured__heading"><div><p className="kicker">Selected range concepts</p><h2 id="featured-title">A closer look at the range.</h2></div><p>Editorial selections from across the range. These are concept visuals, not a sales ranking or confirmed product list.</p></div>
+  return <section className="featured section-space" aria-labelledby="featured-title"><div className="wrap">{showCarousel ? <FeaturedCarousel items={featured} heading={heading} /> : <>{heading}<div className="featured__grid">{featured.map((product) => <ProductCard key={product.id} product={product} />)}</div></>}<a className="text-link featured__link" href="/products.html">View the full concept catalogue <Arrow /></a></div></section>
 }
 
 function CataloguePage() {
   const [query, setQuery] = React.useState('')
   const [family, setFamily] = React.useState('All')
+  const [page, setPage] = React.useState(1)
+  const gridRef = React.useRef(null)
   const families = ['All', ...new Set(products.map((product) => product.family))]
-  const visible = products.filter((product) => (family === 'All' || product.family === family) && `${product.name} ${product.application} ${product.id}`.toLowerCase().includes(query.toLowerCase().trim()))
+  const filtered = products.filter((product) => (family === 'All' || product.family === family) && `${product.name} ${product.application} ${product.id}`.toLowerCase().includes(query.toLowerCase().trim()))
+  const pageSize = 9
+  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize))
+  const current = Math.min(page, pageCount)
+  const visible = filtered.slice((current - 1) * pageSize, current * pageSize)
 
-  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin concept catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore 32 original range concepts across floor care, laundry, warewashing, and surface cleaning. Product availability and technical details are pending Kelvin approval.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The concept range</h2></div><label className="catalogue__search"><span>Search concepts</span><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => setFamily(option)}>{option}</button>)}</div><p className="catalogue__count" role="status">{visible.length} concept {visible.length === 1 ? 'product' : 'products'} shown</p>{visible.length ? <div className="catalogue__grid">{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No concepts match that search. Try another name or category.</p>}<p className="catalogue__disclaimer">Concept catalogue for design review. No product formula, efficacy, pack size, technical document, or commercial availability is confirmed.</p></div></section><Contact /></>
+  const goToPage = (next) => {
+    if (next < 1 || next > pageCount) return
+    setPage(next)
+    gridRef.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
+  }
+
+  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin concept catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore 32 original range concepts across floor care, laundry, warewashing, and surface cleaning. Product availability and technical details are pending Kelvin approval.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The concept range</h2></div><label className="catalogue__search"><span>Search concepts</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} concept {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No concepts match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination"><button type="button" onClick={() => goToPage(current - 1)} disabled={current === 1} aria-label="Previous page">←</button>{Array.from({ length: pageCount }, (_, index) => <button key={index} type="button" aria-current={current === index + 1 ? 'page' : undefined} onClick={() => goToPage(index + 1)}>{index + 1}</button>)}<button type="button" onClick={() => goToPage(current + 1)} disabled={current === pageCount} aria-label="Next page">→</button></nav>}<p className="catalogue__disclaimer">Concept catalogue for design review. No product formula, efficacy, pack size, technical document, or commercial availability is confirmed.</p></div></section><Contact /></>
 }
 
 function App() {
