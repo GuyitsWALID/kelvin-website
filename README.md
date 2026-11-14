@@ -23,7 +23,7 @@ The following need Kelvin approval before public launch:
 - FAQ answers
 - Contact email, phone, WhatsApp, and form destination
 
-The contact section intentionally does not send enquiries yet. No Betco labels, formulations, images, or technical claims were copied into the site. The transparent PNG packshots are AI-generated concept renders, not photographs of manufactured products. Their label text and shapes need Kelvin's review before use outside this preview.
+The contact form is an interactive demo; it validates fields locally and does not send or save enquiries. Connect an approved delivery endpoint and privacy notice before launch. No Betco labels, formulations, images, or technical claims were copied into the site. The transparent PNG packshots are AI-generated concept renders, not photographs of manufactured products. Their label text and shapes need Kelvin's review before use outside this preview.
 
 ## Tools and motion
 
