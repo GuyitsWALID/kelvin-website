@@ -185,13 +185,14 @@ function Footer() {
 }
 
 function ProductCard({ product }) {
-  return <article className="product-card">
+  const reduceMotion = useReducedMotion()
+  return <motion.article className="product-card" initial="rest" whileHover={reduceMotion ? undefined : 'hover'}>
     <div className="product-card__image">
-      <img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} concept packshot`} loading="lazy" />
+      <motion.img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} concept packshot`} loading="lazy" variants={{ rest: { y: 0, scale: 1, rotate: 0 }, hover: { y: -11, scale: 1.045, rotate: -1 } }} transition={{ type: 'spring', stiffness: 190, damping: 20 }} />
       <span className="product-card__status">Concept</span>
     </div>
     <div className="product-card__copy"><span>{product.family} · {product.id}</span><h3>{product.name}</h3><p>{product.description}</p></div>
-  </article>
+  </motion.article>
 }
 
 function useMediaQuery(query) {
