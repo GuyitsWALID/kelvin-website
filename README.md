@@ -1,6 +1,6 @@
-# Kelvin website — initial version
+# Kelvin website — review build
 
-A responsive, single-page first version of Kelvin's company website. It uses the supplied Kelvin vector logo. A live WebGL2 dot field responds to pointer movement, with Motion for React smoothing the interaction. The header uses a navy-to-blue gradient, the story and contact areas use solid blue, and the footer is navy.
+A responsive home page and 32-product concept catalogue for Kelvin. It uses the supplied Kelvin vector logo. A live WebGL2 dot field responds to pointer movement, with Motion for React smoothing the interaction. The header uses a navy-to-blue gradient, the story and contact areas use solid blue, and the footer is navy. Product cards use Motion hover effects with a reduced-motion fallback.
 
 ## Run locally
 
@@ -9,19 +9,21 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173/`. Run `npm run build` to create the production bundle in `dist/`.
+Open `http://127.0.0.1:5173/` for the home page and `http://127.0.0.1:5173/products.html` for the catalogue. Run `npm run build` to create both production pages in `dist/`.
 
 ## Content status
 
-This is a **review build**, not publication-ready copy. The following are provisional and should be replaced or confirmed when Kelvin returns the questionnaire:
+This is a **review build**, not a verified commercial catalogue. The 32 products, their names, descriptions, labels, and packaging are original concepts for review. The home page's three featured products are editorial picks, not a claim about sales. [CATALOGUE_RESEARCH.md](CATALOGUE_RESEARCH.md) records the reference sources and content boundary.
 
-- Product families, descriptions, product names, specifications, photographs, and technical documents
-- Exact company story, manufacturing role, company location, and service markets
+The following need Kelvin approval before public launch:
+
+- Actual product range, names, pack sizes, descriptions, specifications, safety and technical documents
+- The client-provided nine-year history, Dubai office, and KEZAD manufacturing location, including exact legal entity and addresses
 - Credentials, certifications, and performance claims
 - FAQ answers
 - Contact email, phone, WhatsApp, and form destination
 
-The contact section intentionally does not send enquiries yet. No Betco labels, formulations, images, or technical claims were copied into the site. The final product catalogue and enquiry delivery should be implemented only with Kelvin-approved information.
+The contact section intentionally does not send enquiries yet. No Betco labels, formulations, images, or technical claims were copied into the site. The transparent PNG packshots are AI-generated concept renders, not photographs of manufactured products. Their label text and shapes need Kelvin's review before use outside this preview.
 
 ## Tools and motion
 
