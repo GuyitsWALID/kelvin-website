@@ -154,3 +154,6 @@ h1{font-size:clamp(58px,6.7vw,106px);line-height:1.03;letter-spacing:-.072em;fon
 @media(max-width:580px){.wrap{width:calc(100% - 42px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px))}.mobile-nav{padding-left:max(21px,env(safe-area-inset-left, 0px));padding-right:max(21px,env(safe-area-inset-right, 0px))}}
 @media(hover:hover) and (pointer:fine){.desktop-nav a:hover,.footer__bottom a:hover{color:#fff}a:hover .arrow,button:hover .arrow{transform:translate(3px,-2px)}.button:hover{transform:translateY(-2px)}.button--blue:hover{background:#0282ef}.range__row:hover{padding-left:19px;background:rgba(0,151,249,.11)}.catalogue__filters button:hover{background:#0068c4;border-color:#0068c4;color:#fff}.catalogue__pagination button:hover:not(:disabled){border-color:#7bd6ff;color:#fff}}
 @media(pointer:coarse){.catalogue__search input{font-size:16px}}
+.logo img{width:clamp(160px,13vw,205px);height:auto}
+.footer__top img{width:clamp(180px,18vw,260px);height:auto}
+@media(max-width:820px){.logo img{width:clamp(118px,34vw,160px)}.footer__top img{width:clamp(160px,45vw,230px)}}
