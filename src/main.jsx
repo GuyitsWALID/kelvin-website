@@ -113,7 +113,7 @@ function Hero() {
     <div className="hero__body">
       <motion.p className="hero__eyebrow" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>Dubai · Cleaning & disinfectant chemistry</motion.p>
       <motion.h1 id="hero-title" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08 }}>A cleaner future starts with the work we do today.</motion.h1>
-      <motion.p className="hero__intro" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.16 }}>Kelvin brings nine years of experience to professional cleaning. Discover our direction, explore the concept range, and find the right conversation for your business.</motion.p>
+      <motion.p className="hero__intro" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.16 }}>Kelvin brings nine years of experience to professional cleaning. Explore our current products and find the right conversation for your business.</motion.p>
       <motion.div className="hero__actions" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.24 }}>
         <a className="button button--blue" href="/products.html">Explore the range <Arrow diagonal /></a>
         <a className="text-link" href="#about">Discover Kelvin <Arrow /></a>
@@ -131,7 +131,7 @@ function Range() {
       <div className="section-heading">
         <p className="kicker">The range</p>
         <h2 id="products-title">Cleaning starts with the right application.</h2>
-        <p>Explore the areas Kelvin is shaping into its new digital catalogue. Individual product information will be added as it is confirmed.</p>
+        <p>Explore Kelvin’s cleaning categories and the products behind its refreshed catalogue.</p>
       </div>
       <div className="range__grid">
         <div className="range__list" aria-label="Product family previews">
@@ -148,8 +148,8 @@ function Range() {
           </AnimatePresence>
         </div>
       </div>
-      <p className="range__note">Range preview only. Final Kelvin products, specifications, and technical documents are being confirmed.</p>
-      <a className="text-link range__catalogue-link" href="/products.html">Browse all 32 concepts <Arrow /></a>
+      <p className="range__note">Product-specific directions and safety information should be checked against Kelvin’s technical documents.</p>
+      <a className="text-link range__catalogue-link" href="/products.html">Browse the full catalogue <Arrow /></a>
     </div>
   </section>
 }
@@ -170,7 +170,7 @@ function Principles() {
 function Faq() {
   const questions = [
     ['Where is Kelvin based?', 'Kelvin has an office in Dubai. Manufacturing is in Khalifa Economic Zones Abu Dhabi (KEZAD). Exact contact details will be added after confirmation.'],
-    ['Can I browse the full catalogue here?', 'You can browse the concept catalogue. Product availability, packaging, specifications, and technical documents still require Kelvin approval.'],
+    ['Can I browse the full catalogue here?', 'Yes. The catalogue shows Kelvin’s current priority range alongside concepts still being developed. Request the matching technical documents for product use.'],
     ['How can I ask about a specific application?', 'The contact section includes a demo form showing the details Kelvin will need. It does not send an enquiry yet.'],
   ]
   return <section className="faq section-space" id="faq" aria-labelledby="faq-title"><div className="wrap faq__grid"><div><p className="kicker">Good to know</p><h2 id="faq-title">Questions about Kelvin</h2><p>More answers will follow when the product and company information is finalized.</p></div><div className="faq__items">{questions.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div></section>
@@ -189,8 +189,8 @@ function ProductCard({ product }) {
   const reduceMotion = useReducedMotion()
   return <motion.article className="product-card" initial="rest" whileHover={reduceMotion ? undefined : 'hover'}>
     <div className="product-card__image">
-      <motion.img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} concept packshot`} loading="lazy" variants={{ rest: { y: 0, scale: 1, rotate: 0 }, hover: { y: -11, scale: 1.045, rotate: -1 } }} transition={{ type: 'spring', stiffness: 190, damping: 20 }} />
-      <span className="product-card__status">Concept</span>
+      <motion.img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} container`} loading="lazy" variants={{ rest: { y: 0, scale: 1, rotate: 0 }, hover: { y: -11, scale: 1.045, rotate: -1 } }} transition={{ type: 'spring', stiffness: 190, damping: 20 }} />
+      <span className="product-card__status">{product.current ? 'Current range' : 'Concept'}</span>
     </div>
     <div className="product-card__copy"><span>{product.family} · {product.id}</span><h3>{product.name}</h3><p>{product.description}</p></div>
   </motion.article>
@@ -220,7 +220,7 @@ function CarouselCard({ product, index, count, progress, spacing, active }) {
   const zIndex = useTransform(() => Math.max(1, 3 - Math.round(Math.abs(offset.get()))))
 
   return <motion.article className={`carousel-card${active === index ? ' is-active' : ''}`} style={{ x, y, scale, opacity, zIndex }}>
-    <div className="carousel-card__image"><img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} concept packshot`} loading="lazy" /></div>
+    <div className="carousel-card__image"><img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} container`} loading="lazy" /></div>
     <div className="carousel-card__copy"><span>{product.family} · {product.id}</span><h3>{product.name}</h3></div>
   </motion.article>
 }
@@ -269,8 +269,8 @@ function Featured() {
   const reduceMotion = useReducedMotion()
   const featured = products.filter((product) => product.featured)
   const showCarousel = isMobile && !reduceMotion
-  const heading = <div className="featured__heading"><div><p className="kicker">Selected range concepts</p><h2 id="featured-title">A closer look at the range.</h2></div><p>Editorial selections from across the range. These are concept visuals, not a sales ranking or confirmed product list.</p></div>
-  return <section className="featured section-space" aria-labelledby="featured-title"><div className="wrap">{showCarousel ? <FeaturedCarousel items={featured} heading={heading} /> : <>{heading}<div className="featured__grid">{featured.map((product) => <ProductCard key={product.id} product={product} />)}</div></>}<a className="text-link featured__link" href="/products.html">View the full concept catalogue <Arrow /></a></div></section>
+  const heading = <div className="featured__heading"><div><p className="kicker">Current Kelvin range</p><h2 id="featured-title">A closer look at the range.</h2></div><p>The priority products shared for Kelvin’s refreshed catalogue. Technical details are available on request.</p></div>
+  return <section className="featured section-space" aria-labelledby="featured-title"><div className="wrap">{showCarousel ? <FeaturedCarousel items={featured} heading={heading} /> : <>{heading}<div className="featured__grid">{featured.map((product) => <ProductCard key={product.id} product={product} />)}</div></>}<a className="text-link featured__link" href="/products.html">View the full catalogue <Arrow /></a></div></section>
 }
 
 function CataloguePage() {
@@ -291,7 +291,7 @@ function CataloguePage() {
     gridRef.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
   }
 
-  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin concept catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore 32 original range concepts across floor care, laundry, warewashing, and surface cleaning. Product availability and technical details are pending Kelvin approval.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The concept range</h2></div><label className="catalogue__search"><span>Search concepts</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} concept {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No concepts match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination"><button type="button" onClick={() => goToPage(current - 1)} disabled={current === 1} aria-label="Previous page">←</button>{Array.from({ length: pageCount }, (_, index) => <button key={index} type="button" aria-current={current === index + 1 ? 'page' : undefined} onClick={() => goToPage(index + 1)}>{index + 1}</button>)}<button type="button" onClick={() => goToPage(current + 1)} disabled={current === pageCount} aria-label="Next page">→</button></nav>}<p className="catalogue__disclaimer">Concept catalogue for design review. No product formula, efficacy, pack size, technical document, or commercial availability is confirmed.</p></div></section><Contact /></>
+  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore the current Kelvin products alongside developing floor care, laundry, warewashing, and surface-care concepts. Request product-specific technical documents before use.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination"><button type="button" onClick={() => goToPage(current - 1)} disabled={current === 1} aria-label="Previous page">←</button>{Array.from({ length: pageCount }, (_, index) => <button key={index} type="button" aria-current={current === index + 1 ? 'page' : undefined} onClick={() => goToPage(index + 1)}>{index + 1}</button>)}<button type="button" onClick={() => goToPage(current + 1)} disabled={current === pageCount} aria-label="Next page">→</button></nav>}<p className="catalogue__disclaimer">Product visuals are for catalogue presentation. Request the matching Kelvin label and technical documents for directions, hazards, and specifications.</p></div></section><Contact /></>
 }
 
 function App() {
