@@ -228,6 +228,7 @@ function CarouselCard({ product, index, count, progress, spacing, active }) {
 function FeaturedCarousel({ items, heading }) {
   const trackRef = React.useRef(null)
   const stageRef = React.useRef(null)
+  const reduceMotion = useReducedMotion()
   const [spacing, setSpacing] = React.useState(0)
   const count = items.length
 
@@ -245,7 +246,8 @@ function FeaturedCarousel({ items, heading }) {
   }, [items.length])
 
   const { scrollYProgress } = useScroll({ target: trackRef, offset: ['start start', 'end end'] })
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.35 })
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.35 })
+  const progress = reduceMotion ? scrollYProgress : smoothProgress
   const [active, setActive] = React.useState(0)
 
   useMotionValueEvent(progress, 'change', (value) => {
@@ -266,9 +268,8 @@ function FeaturedCarousel({ items, heading }) {
 
 function Featured() {
   const isMobile = useMediaQuery('(max-width: 820px)')
-  const reduceMotion = useReducedMotion()
   const featured = products.filter((product) => product.featured)
-  const showCarousel = isMobile && !reduceMotion
+  const showCarousel = isMobile
   const heading = <div className="featured__heading"><div><p className="kicker">Current Kelvin range</p><h2 id="featured-title">A closer look at the range.</h2></div><p>The priority products shared for Kelvin’s refreshed catalogue. Technical details are available on request.</p></div>
   return <section className="featured section-space" aria-labelledby="featured-title"><div className="wrap">{showCarousel ? <FeaturedCarousel items={featured} heading={heading} /> : <>{heading}<div className="featured__grid">{featured.map((product) => <ProductCard key={product.id} product={product} />)}</div></>}<a className="text-link featured__link" href="/products.html">View the full catalogue <Arrow /></a></div></section>
 }
