@@ -21,9 +21,9 @@ The following need Kelvin approval before public launch:
 - The client-provided nine-year history, Dubai office, and KEZAD manufacturing location, including exact legal entity and addresses
 - Credentials, certifications, and performance claims
 - FAQ answers
-- Contact email, phone, WhatsApp, and form destination
+- Contact email and any additional office details
 
-The contact form is an interactive demo; it validates fields locally and does not send or save enquiries. Connect an approved delivery endpoint and privacy notice before launch. No Betco labels, formulations, images, or technical claims were copied into the site. The transparent PNG packshots are AI-generated concept renders, not photographs of manufactured products. Their label text and shapes need Kelvin's review before use outside this preview.
+The enquiry form opens WhatsApp at +971 4 608 1236 with a prefilled message. The visitor must review it and tap Send in WhatsApp; the website does not store the form data. The footer also lists Kelvin's service telephone, +971 4 608 1235. Add an approved privacy notice before launch. No Betco labels, formulations, images, or technical claims were copied into the site. The transparent PNG packshots are AI-generated concept renders, not photographs of manufactured products. Their label text and shapes need Kelvin's review before use outside this preview.
 
 ## Tools and motion
 

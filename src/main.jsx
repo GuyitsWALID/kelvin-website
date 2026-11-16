@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { AnimatePresence, MotionConfig, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { startDotField } from './dotField'
 import products from './catalogue.json'
+import { whatsappEnquiryUrl, whatsappNumber } from './whatsapp'
 import './styles.css'
 
 const asset = '/assets/'
@@ -94,7 +95,7 @@ function Header() {
       <nav className="desktop-nav" aria-label="Main navigation">
         {links.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
       </nav>
-      <a className="header__enquire" href="/#contact">Enquiry guidance <Arrow diagonal /></a>
+      <a className="header__enquire" href="/#contact">Contact Kelvin <Arrow diagonal /></a>
       <button className="menu-toggle" type="button" aria-label={open ? 'Close menu' : 'Open menu'} aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen(!open)}>
         <span /><span />
       </button>
@@ -159,7 +160,7 @@ function About() {
   return <section className="about" id="about" aria-labelledby="about-title">
     <div className="wrap about__grid">
       <div className="about__number"><strong>9</strong><span>years since founding</span></div>
-      <div className="about__copy"><p className="kicker">A new chapter</p><h2 id="about-title">Nine years in. A clearer way forward.</h2><p>Kelvin's office is in Dubai, with manufacturing in Khalifa Economic Zones Abu Dhabi (KEZAD). The new identity brings its product range and company story into clearer focus.</p><a className="text-link text-link--light" href="#contact">See enquiry guidance <Arrow /></a></div>
+      <div className="about__copy"><p className="kicker">A new chapter</p><h2 id="about-title">Nine years in. A clearer way forward.</h2><p>Kelvin's office is in Dubai, with manufacturing in Khalifa Economic Zones Abu Dhabi (KEZAD). The new identity brings its product range and company story into clearer focus.</p><a className="text-link text-link--light" href="#contact">Contact Kelvin <Arrow /></a></div>
     </div>
   </section>
 }
@@ -170,20 +171,24 @@ function Principles() {
 
 function Faq() {
   const questions = [
-    ['Where is Kelvin based?', 'Kelvin has an office in Dubai. Manufacturing is in Khalifa Economic Zones Abu Dhabi (KEZAD). Exact contact details will be added after confirmation.'],
+    ['Where is Kelvin based?', 'Kelvin has an office in Dubai. Manufacturing is in Khalifa Economic Zones Abu Dhabi (KEZAD). Call +971 4 608 1235 or contact us on WhatsApp at +971 4 608 1236.'],
     ['Can I browse the full catalogue here?', 'Yes. The catalogue shows Kelvin’s current priority range alongside concepts still being developed. Request the matching technical documents for product use.'],
-    ['How can I ask about a specific application?', 'The contact section includes a demo form showing the details Kelvin will need. It does not send an enquiry yet.'],
+    ['How can I ask about a specific application?', 'Complete the enquiry form to open WhatsApp with your details, then review and send the message to Kelvin.'],
   ]
-  return <section className="faq section-space" id="faq" aria-labelledby="faq-title"><div className="wrap faq__grid"><div><p className="kicker">Good to know</p><h2 id="faq-title">Questions about Kelvin</h2><p>More answers will follow when the product and company information is finalized.</p></div><div className="faq__items">{questions.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div></section>
+  return <section className="faq section-space" id="faq" aria-labelledby="faq-title"><div className="wrap faq__grid"><div><p className="kicker">Good to know</p><h2 id="faq-title">Questions about Kelvin</h2></div><div className="faq__items">{questions.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div></section>
 }
 
 function Contact() {
-  const [submitted, setSubmitted] = React.useState(false)
-  return <section className="contact" id="contact" aria-labelledby="contact-title"><div className="wrap contact__grid"><div><p className="kicker">The next conversation</p><h2 id="contact-title">Tell us what you need to clean.</h2><p>Show us the application, environment, and information you need. This form is a demo while Kelvin's enquiry channel is being prepared.</p></div><form className="contact__panel contact__form" onSubmit={(event) => { event.preventDefault(); setSubmitted(true) }} onChange={() => setSubmitted(false)}><span className="contact__panel-title">Enquiry preview</span><p className="contact__form-note">Demo only. Details entered here are not sent or saved.</p><label>Your name<input name="name" autoComplete="name" required /></label><label>Business email<input name="email" type="email" autoComplete="email" inputMode="email" required /></label><label>Company<input name="company" autoComplete="organization" required /></label><label>What do you need?<textarea name="message" rows="4" required placeholder="Tell us about the cleaning task, product range, or technical details you need." /></label><button className="button button--blue contact__submit" type="submit">Preview enquiry <Arrow diagonal /></button><p className="contact__form-status" role="status">{submitted ? 'Demo complete. No enquiry was sent; Kelvin contact delivery will be connected before launch.' : 'Submission is disabled for delivery in this website preview.'}</p></form></div></section>
+  const submit = (event) => {
+    event.preventDefault()
+    const fields = Object.fromEntries(new FormData(event.currentTarget))
+    window.location.assign(whatsappEnquiryUrl(fields))
+  }
+  return <section className="contact" id="contact" aria-labelledby="contact-title"><div className="wrap contact__grid"><div><p className="kicker">The next conversation</p><h2 id="contact-title">Tell us what you need to clean.</h2><p>Tell us about your application, environment, and product needs. We’ll continue the conversation on WhatsApp.</p></div><form className="contact__panel contact__form" onSubmit={submit}><span className="contact__panel-title">Send an enquiry</span><p className="contact__form-note">Your details will open in WhatsApp as a draft message. Review it and tap Send to contact Kelvin.</p><label>Your name<input name="name" autoComplete="name" required /></label><label>Business email<input name="email" type="email" autoComplete="email" inputMode="email" required /></label><label>Company<input name="company" autoComplete="organization" required /></label><label>What do you need?<textarea name="message" rows="4" required placeholder="Tell us about the cleaning task, product range, or technical details you need." /></label><button className="button button--blue contact__submit" type="submit">Continue in WhatsApp <Arrow diagonal /></button></form></div></section>
 }
 
 function Footer() {
-  return <footer className="footer"><div className="wrap"><div className="footer__top"><a href="/" aria-label="Kelvin home"><img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" /></a><p>Cleaning chemistry for a changing world.</p></div><div className="footer__bottom"><span>© {new Date().getFullYear()} Kelvin. Website preview.</span><nav aria-label="Footer navigation"><a href="/products.html">Products</a><a href="/#about">About</a><a href="/#faq">FAQ</a><a href="/#contact">Contact</a></nav></div></div></footer>
+  return <footer className="footer"><div className="wrap"><div className="footer__top"><a href="/" aria-label="Kelvin home"><img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" /></a><p>Cleaning chemistry for a changing world.</p><div className="footer__contact"><span>Contact Kelvin</span><a href="tel:+97146081235">Tel: +971 4 608 1235</a><a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp: +971 4 608 1236</a></div></div><div className="footer__bottom"><span>© {new Date().getFullYear()} Kelvin.</span><nav aria-label="Footer navigation"><a href="/products.html">Products</a><a href="/#about">About</a><a href="/#faq">FAQ</a><a href="/#contact">Contact</a></nav></div></div></footer>
 }
 
 function ProductCard({ product }) {
