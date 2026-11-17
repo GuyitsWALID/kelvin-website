@@ -24,7 +24,7 @@ const families = [
   {
     name: 'Surface care',
     scope: 'For shared and high-use spaces',
-    detail: 'Browse by surface and cleaning task as Kelvin’s approved catalogue is prepared.',
+    detail: 'Browse by surface and cleaning task to find the right Kelvin range.',
     shape: 'surface',
   },
   {
@@ -136,7 +136,7 @@ function Range() {
         <p>Explore Kelvin’s cleaning categories and the products behind its refreshed catalogue.</p>
       </div>
       <div className="range__grid">
-        <div className="range__list" aria-label="Product family previews">
+        <div className="range__list" aria-label="Product families">
           {families.map((family, index) => <button key={family.name} type="button" aria-pressed={active === index} className={`range__row ${active === index ? 'is-active' : ''}`} onClick={() => setActive(index)}>
             <span className="range__row-name">{family.name}</span><span className="range__row-scope">{family.scope}</span><Arrow diagonal />
           </button>)}
@@ -145,7 +145,7 @@ function Range() {
           <AnimatePresence mode="wait">
             <motion.div key={active} className={`range__visual-inner shape--${families[active].shape}`} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} transition={{ duration: 0.32 }}>
               <div className="range__form" aria-hidden="true"><span /><span /><span /></div>
-              <div className="range__visual-copy"><span>Application preview</span><h3>{families[active].name}</h3><p>{families[active].detail}</p></div>
+              <div className="range__visual-copy"><span>Application focus</span><h3>{families[active].name}</h3><p>{families[active].detail}</p></div>
             </motion.div>
           </AnimatePresence>
         </div>
@@ -184,18 +184,18 @@ function Contact() {
     const fields = Object.fromEntries(new FormData(event.currentTarget))
     window.location.assign(whatsappEnquiryUrl(fields))
   }
-  return <section className="contact" id="contact" aria-labelledby="contact-title"><div className="wrap contact__grid"><div><p className="kicker">The next conversation</p><h2 id="contact-title">Tell us what you need to clean.</h2><p>Tell us about your application, environment, and product needs. We’ll continue the conversation on WhatsApp.</p></div><form className="contact__panel contact__form" onSubmit={submit}><span className="contact__panel-title">Send an enquiry</span><p className="contact__form-note">Your details will open in WhatsApp as a draft message. Review it and tap Send to contact Kelvin.</p><label>Your name<input name="name" autoComplete="name" required /></label><label>Business email<input name="email" type="email" autoComplete="email" inputMode="email" required /></label><label>Company<input name="company" autoComplete="organization" required /></label><label>What do you need?<textarea name="message" rows="4" required placeholder="Tell us about the cleaning task, product range, or technical details you need." /></label><button className="button button--blue contact__submit" type="submit">Continue in WhatsApp <Arrow diagonal /></button></form></div></section>
+  return <section className="contact" id="contact" aria-labelledby="contact-title"><div className="wrap contact__grid"><div><p className="kicker">The next conversation</p><h2 id="contact-title">Tell us what you need to clean.</h2><p>Tell us about your application, environment, and product needs. We’ll continue the conversation on WhatsApp.</p></div><form className="contact__panel contact__form" onSubmit={submit}><span className="contact__panel-title">Send an enquiry</span><p className="contact__form-note">Your details will open in WhatsApp as a draft message. Review it and tap Send to contact Kelvin. <a href="/privacy.html">Privacy notice</a></p><label>Your name<input name="name" autoComplete="name" required /></label><label>Business email<input name="email" type="email" autoComplete="email" inputMode="email" required /></label><label>Company<input name="company" autoComplete="organization" required /></label><label>What do you need?<textarea name="message" rows="4" required placeholder="Tell us about the cleaning task, product range, or technical details you need." /></label><button className="button button--blue contact__submit" type="submit">Continue in WhatsApp <Arrow diagonal /></button></form></div></section>
 }
 
 function Footer() {
-  return <footer className="footer"><div className="wrap"><div className="footer__top"><a href="/" aria-label="Kelvin home"><img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" /></a><p>Cleaning chemistry for a changing world.</p><div className="footer__contact"><span>Contact Kelvin</span><a href="tel:+97146081235">Tel: +971 4 608 1235</a><a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp: +971 4 608 1236</a></div></div><div className="footer__bottom"><span>© {new Date().getFullYear()} Kelvin.</span><nav aria-label="Footer navigation"><a href="/products.html">Products</a><a href="/#about">About</a><a href="/#faq">FAQ</a><a href="/#contact">Contact</a></nav></div></div></footer>
+  return <footer className="footer"><div className="wrap"><div className="footer__top"><a href="/" aria-label="Kelvin home"><img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" /></a><p>Cleaning chemistry for a changing world.</p><div className="footer__contact"><span>Contact Kelvin</span><a href="tel:+97146081235">Tel: +971 4 608 1235</a><a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp: +971 4 608 1236</a></div></div><div className="footer__bottom"><span>© {new Date().getFullYear()} Kelvin.</span><nav aria-label="Footer navigation"><a href="/products.html">Products</a><a href="/#about">About</a><a href="/#faq">FAQ</a><a href="/#contact">Contact</a><a href="/privacy.html">Privacy</a></nav></div></div></footer>
 }
 
 function ProductCard({ product }) {
   const reduceMotion = useReducedMotion()
   return <motion.article className="product-card" initial="rest" whileHover={reduceMotion ? undefined : 'hover'}>
     <div className="product-card__image">
-      <motion.img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} container`} loading="lazy" variants={{ rest: { y: 0, scale: 1, rotate: 0 }, hover: { y: -11, scale: 1.045, rotate: -1 } }} transition={{ type: 'spring', stiffness: 190, damping: 20 }} />
+      <motion.img src={`/products/${product.id.toLowerCase()}.webp`} alt={`Kelvin ${product.name} container`} loading="lazy" variants={{ rest: { y: 0, scale: 1, rotate: 0 }, hover: { y: -11, scale: 1.045, rotate: -1 } }} transition={{ type: 'spring', stiffness: 190, damping: 20 }} />
       <span className="product-card__status">{product.current ? 'Current range' : 'Concept'}</span>
     </div>
     <div className="product-card__copy"><span>{product.family} · {product.id}</span><h3>{product.name}</h3><p>{product.description}</p></div>
@@ -226,7 +226,7 @@ function CarouselCard({ product, index, count, progress, spacing, active }) {
   const zIndex = useTransform(() => Math.max(1, 3 - Math.round(Math.abs(offset.get()))))
 
   return <motion.article className={`carousel-card${active === index ? ' is-active' : ''}`} style={{ x, y, scale, opacity, zIndex }}>
-    <div className="carousel-card__image"><img src={`/products/${product.id.toLowerCase()}.png`} alt={`Kelvin ${product.name} container`} loading="lazy" /></div>
+    <div className="carousel-card__image"><img src={`/products/${product.id.toLowerCase()}.webp`} alt={`Kelvin ${product.name} container`} loading="lazy" /></div>
     <div className="carousel-card__copy"><span>{product.family} · {product.id}</span><h3>{product.name}</h3></div>
   </motion.article>
 }
@@ -298,12 +298,17 @@ function CataloguePage() {
     gridRef.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
   }
 
-  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore the current Kelvin products alongside developing floor care, laundry, warewashing, and surface-care concepts. Request product-specific technical documents before use.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination"><button type="button" onClick={() => goToPage(current - 1)} disabled={current === 1} aria-label="Previous page"><Arrow left /></button>{Array.from({ length: pageCount }, (_, index) => <button key={index} type="button" aria-current={current === index + 1 ? 'page' : undefined} onClick={() => goToPage(index + 1)}>{index + 1}</button>)}<button type="button" onClick={() => goToPage(current + 1)} disabled={current === pageCount} aria-label="Next page"><Arrow /></button></nav>}<p className="catalogue__disclaimer">Product visuals are for catalogue presentation. Request the matching Kelvin label and technical documents for directions, hazards, and specifications.</p></div></section><Contact /></>
+  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore the current Kelvin products alongside developing floor care, laundry, warewashing, and surface-care concepts. Request product-specific technical documents before use.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination"><button type="button" onClick={() => goToPage(current - 1)} disabled={current === 1} aria-label="Previous page"><Arrow left /></button>{Array.from({ length: pageCount }, (_, index) => <button key={index} type="button" aria-current={current === index + 1 ? 'page' : undefined} onClick={() => goToPage(index + 1)}>{index + 1}</button>)}<button type="button" onClick={() => goToPage(current + 1)} disabled={current === pageCount} aria-label="Next page"><Arrow /></button></nav>}<p className="catalogue__disclaimer">For directions, hazards, and specifications, request the matching Kelvin technical documents before use.</p></div></section><Contact /></>
+}
+
+function PrivacyPage() {
+  return <section className="privacy section-space"><div className="wrap privacy__body"><p className="kicker">Kelvin</p><h1>Privacy notice</h1><p>When you complete the enquiry form, your browser opens WhatsApp with your name, business email, company, and message in a draft. Review the draft before sending it. This website does not store the form details in a database.</p><h2>WhatsApp enquiries</h2><p>If you send the message, Kelvin receives it through WhatsApp and uses it to respond to your enquiry. WhatsApp processes information under its <a href="https://www.whatsapp.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">privacy policy</a>. Your browser or WhatsApp may retain the draft or message in its history.</p><h2>Website services</h2><p>The site is hosted by Vercel and loads fonts from Google Fonts. These services may process technical connection information when you visit.</p><h2>Contact</h2><p>For questions about your enquiry or your information, call <a href="tel:+97146081235">+971 4 608 1235</a> or message Kelvin on <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>.</p></div></section>
 }
 
 function App() {
   const isCatalogue = window.location.pathname.endsWith('/products.html')
-  return <><Background /><div className="site"><Header /><main>{isCatalogue ? <CataloguePage /> : <><Hero /><Range /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
+  const isPrivacy = window.location.pathname.endsWith('/privacy.html')
+  return <><Background /><div className="site"><Header /><main>{isPrivacy ? <PrivacyPage /> : isCatalogue ? <CataloguePage /> : <><Hero /><Range /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
 }
 
 createRoot(document.getElementById('root')).render(<MotionConfig reducedMotion="user"><App /></MotionConfig>)

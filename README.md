@@ -1,6 +1,6 @@
-# Kelvin website — review build
+# Kelvin website
 
-A responsive home page and 32-product concept catalogue for Kelvin. It uses the supplied Kelvin vector logo. A live WebGL2 dot field responds to pointer movement, with Motion for React smoothing the interaction. The header uses a navy-to-blue gradient, the story and contact areas use solid blue, and the footer is navy. Product cards use Motion hover effects with a reduced-motion fallback.
+Kelvin's responsive company website has a home page, a 34-product catalogue, and a privacy notice. It uses the supplied Kelvin logo, a motion-responsive WebGL2 background, and Motion for React transitions. The office is in Dubai and manufacturing is in Khalifa Economic Zones Abu Dhabi (KEZAD).
 
 ## Run locally
 
@@ -9,22 +9,18 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173/` for the home page and `http://127.0.0.1:5173/products.html` for the catalogue. Run `npm run build` to create both production pages in `dist/`.
+Open `http://127.0.0.1:5173/`, `/products.html`, or `/privacy.html`. Run `npm run build` to produce all three pages in `dist/`.
 
-## Content status
+## Catalogue and enquiries
 
-This is a **review build**, not a verified commercial catalogue. The 32 products, their names, descriptions, labels, and packaging are original concepts for review. The home page's three featured products are editorial picks, not a claim about sales. [CATALOGUE_RESEARCH.md](CATALOGUE_RESEARCH.md) records the reference sources and content boundary.
+The catalogue contains 12 current Kelvin products featured on the home page and 22 proposed products marked **Concept**. The project owner approved the product information for this company website. The site presents the range and does not take orders. Customers should request the matching Kelvin technical documents for product directions, hazards, and specifications.
 
-The following need Kelvin approval before public launch:
+Product cards use transparent, Kelvin-branded WebP packshots. The supplied logo and branded social-sharing image are in `public/assets/`. [CATALOGUE_RESEARCH.md](CATALOGUE_RESEARCH.md) records competitor research and the distinction between Kelvin's current and proposed ranges.
 
-- Actual product range, names, pack sizes, descriptions, specifications, safety and technical documents
-- The client-provided nine-year history, Dubai office, and KEZAD manufacturing location, including exact legal entity and addresses
-- Credentials, certifications, and performance claims
-- FAQ answers
-- Contact email and any additional office details
+The enquiry form opens WhatsApp at +971 4 608 1236 with a prefilled message. The visitor reviews it and taps Send in WhatsApp; the website does not store the form details in a database. The footer also lists Kelvin's service telephone, +971 4 608 1235. The [privacy notice](privacy.html) explains this handoff.
 
-The enquiry form opens WhatsApp at +971 4 608 1236 with a prefilled message. The visitor must review it and tap Send in WhatsApp; the website does not store the form data. The footer also lists Kelvin's service telephone, +971 4 608 1235. Add an approved privacy notice before launch. No Betco labels, formulations, images, or technical claims were copied into the site. The transparent PNG packshots are AI-generated concept renders, not photographs of manufactured products. Their label text and shapes need Kelvin's review before use outside this preview.
+## Search and deployment
 
-## Tools and motion
+The current canonical address is `https://kelvin-website-one.vercel.app/`. `robots.txt`, `sitemap.xml`, and the page metadata use this address. Update all three when Kelvin moves to a custom domain.
 
-Built with React, Vite, WebGL2, and [Motion for React](https://motion.dev/docs/react). To add the optional Motion AI skill and MCP configuration to your local checkout, run `npx motion-ai` and choose the project scope. The dot field is procedural; the original logo-free image is only a fallback when WebGL2 is unavailable or reduced motion is preferred. Rendering pauses when the tab is hidden, and touch devices use a lower drawing rate.
+Built with React, Vite, WebGL2, and [Motion for React](https://motion.dev/docs/react). The background uses a static fallback when WebGL2 is unavailable or reduced motion is preferred. Rendering pauses when the tab is hidden, and touch devices use a lower drawing rate.

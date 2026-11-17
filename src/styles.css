@@ -143,6 +143,7 @@ h1{font-size:clamp(58px,6.7vw,106px);line-height:1.03;letter-spacing:-.072em;fon
 @media(max-width:580px){.featured__grid,.catalogue__grid{grid-template-columns:1fr;gap:18px}.featured__heading{margin-bottom:30px}.featured__heading h2,.catalogue__head h2{font-size:clamp(35px,9vw,48px)}.featured__heading>p{font-size:14px}.product-card__image{height:340px}.catalogue__grid .product-card__image{height:min(52vw,220px)}.catalogue-hero{padding:70px 0 65px}.catalogue-hero h1{font-size:clamp(38px,10vw,52px);margin-bottom:22px}.catalogue-hero>div>p:last-child{font-size:16px;line-height:1.55}.catalogue__head{margin-bottom:25px}.catalogue__search{width:100%}.catalogue__search input{height:52px;font-size:16px}.catalogue__filters{flex-wrap:nowrap;overflow-x:auto;gap:8px;padding-block:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.catalogue__filters::-webkit-scrollbar{display:none}.catalogue__filters button{flex:none;white-space:nowrap;padding:10px 13px}.catalogue__count{margin:20px 0 18px}.catalogue__pagination{gap:6px;margin-top:30px}.catalogue__pagination button{min-width:40px;height:40px;padding:0 10px}.catalogue__disclaimer{margin-top:32px;padding-top:18px;font-size:11px}}
 .contact__form{display:grid;gap:18px}
 .contact__form-note{font-size:13px!important;line-height:1.5!important;margin:-8px 0 0}
+.contact__form-note a{text-decoration:underline;text-underline-offset:3px}
 .contact__form label{display:grid;gap:7px;font-size:13px;font-weight:600}
 .contact__form input,.contact__form textarea{width:100%;border:1px solid rgba(255,255,255,.55);border-radius:0;background:#f7fbff;color:#07213a;padding:12px 13px;min-height:48px}
 .contact__form textarea{resize:vertical;min-height:110px}
@@ -158,3 +159,4 @@ h1{font-size:clamp(58px,6.7vw,106px);line-height:1.03;letter-spacing:-.072em;fon
 @media(max-width:820px){.logo img{width:clamp(118px,34vw,160px)}.footer__top img{width:clamp(160px,45vw,230px)}}
 @media(max-width:480px){.logo img{width:clamp(100px,30vw,140px)}.footer__top img{width:clamp(138px,40vw,180px)}}
 .footer__top{flex-wrap:wrap}.footer__contact{min-width:220px}@media(max-width:580px){.footer__contact{margin-top:28px}}
+.privacy{min-height:70vh}.privacy__body{max-width:820px}.privacy h1{font-size:clamp(48px,7vw,80px);margin-bottom:40px}.privacy h2{font-size:25px;margin:40px 0 12px}.privacy p{color:#d1e0e9;line-height:1.7}.privacy a{text-decoration:underline;text-underline-offset:3px}
