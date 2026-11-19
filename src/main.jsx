@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import { AnimatePresence, MotionConfig, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { startDotField } from './dotField'
 import products from './catalogue.json'
-import RangeFigure from './RangeFigures'
 import { whatsappEnquiryUrl, whatsappNumber } from './whatsapp'
 import './styles.css'
 
@@ -14,21 +13,25 @@ const families = [
     name: 'Laundry care',
     scope: 'For professional textile care workflows',
     detail: 'Explore solutions by stage of the wash process, fabric need, and operating environment.',
+    shape: 'laundry',
   },
   {
     name: 'Kitchen & warewashing',
     scope: 'For busy food-service operations',
     detail: 'Find a starting point for dish, utensil, and kitchen cleaning enquiries.',
+    shape: 'kitchen',
   },
   {
     name: 'Surface care',
     scope: 'For shared and high-use spaces',
     detail: 'Browse by surface and cleaning task to find the right Kelvin range.',
+    shape: 'surface',
   },
   {
     name: 'Disinfection',
     scope: 'For hygiene-focused applications',
     detail: 'Discuss your application with Kelvin to identify the appropriate approved product information.',
+    shape: 'disinfection',
   },
 ]
 
@@ -125,14 +128,7 @@ function Hero() {
 
 function Range() {
   const [active, setActive] = React.useState(0)
-  const [visible, setVisible] = React.useState(false)
-  const section = React.useRef(null)
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { rootMargin: '120px 0px' })
-    observer.observe(section.current)
-    return () => observer.disconnect()
-  }, [])
-  return <section className="range section-space" id="products" aria-labelledby="products-title" ref={section}>
+  return <section className="range section-space" id="products" aria-labelledby="products-title">
     <div className="wrap">
       <div className="section-heading">
         <p className="kicker">The range</p>
@@ -145,10 +141,10 @@ function Range() {
             <span className="range__row-name">{family.name}</span><span className="range__row-scope">{family.scope}</span><Arrow diagonal />
           </button>)}
         </div>
-        <div className={`range__visual ${visible ? 'is-visible' : ''}`} aria-live="polite">
+        <div className="range__visual" aria-live="polite">
           <AnimatePresence mode="wait">
-            <motion.div key={active} className={`range__visual-inner ${active === 1 ? 'range__visual-inner--card' : ''}`} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} transition={{ duration: 0.32 }}>
-              <RangeFigure index={active} />
+            <motion.div key={active} className={`range__visual-inner shape--${families[active].shape}`} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} transition={{ duration: 0.32 }}>
+              <div className="range__form" aria-hidden="true"><span /><span /><span /></div>
               <div className="range__visual-copy"><span>Application focus</span><h3>{families[active].name}</h3><p>{families[active].detail}</p></div>
             </motion.div>
           </AnimatePresence>
