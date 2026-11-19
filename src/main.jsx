@@ -134,13 +134,13 @@ function Range() {
       </div>
       <div className="range__grid">
         <div className="range__list" aria-label="Product families">
-          {families.map((family, index) => <button key={family.name} type="button" aria-pressed={active === index} className={`range__row ${active === index ? 'is-active' : ''}`} onClick={() => setActive(index)}>
+          {families.map((family, index) => <button key={family.name} type="button" aria-pressed={active === index} className={`range__row ${active === index ? 'is-active' : ''}`} onPointerEnter={event => { if (event.pointerType !== 'touch') setActive(index) }} onFocus={() => setActive(index)} onClick={() => setActive(index)}>
             <span className="range__row-name">{family.name}</span><span className="range__row-scope">{family.scope}</span><Arrow diagonal />
           </button>)}
         </div>
         <div className="range__visual" aria-live="polite">
           <AnimatePresence mode="wait">
-            <motion.div key={active} className="range__visual-inner" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} transition={{ duration: 0.32 }}>
+            <motion.div key={active} className="range__visual-inner" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} transition={{ duration: 0.22 }}>
               <RangeAnatomy index={active} />
               <div className="range__visual-copy"><span>Application focus</span><h3>{families[active].name}</h3><p>{families[active].detail}</p></div>
             </motion.div>
