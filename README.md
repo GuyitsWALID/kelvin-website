@@ -25,5 +25,5 @@ The current canonical address is `https://kelvin-website-one.vercel.app/`. `robo
 
 Built with React, Vite, WebGL2, and [Motion for React](https://motion.dev/docs/react). The background uses a static fallback when WebGL2 is unavailable or reduced motion is preferred. Rendering pauses when the tab is hidden, and touch devices use a lower drawing rate.
 
-The home page Range section uses four interactive blueprint figures built with the [Anatomy](https://skills.wheresryan.sh/anatomy) isometric kit. Drag or use the arrow buttons to turn the view; use Space or the Pause button to control the mechanism, and the up/down arrow keys to change its illustrated speed. The kit's MIT license is included in `src/anatomy/kit/LICENSE`.
+The home page Range section uses four interactive blueprint figures built with the [Anatomy](https://skills.wheresryan.sh/anatomy) isometric kit. Drag the figure to turn its view; keyboard users can use the left/right arrows to turn and up/down arrows to change the illustrated speed. Motion pauses offscreen and when reduced motion is preferred. The kit's MIT license is included in `src/anatomy/kit/LICENSE`.
 
