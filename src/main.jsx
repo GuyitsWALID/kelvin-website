@@ -156,6 +156,17 @@ function Range() {
   </section>
 }
 
+const sectors = [
+  ['Commercial cleaning', 'Building care, carpet extraction, workplace hand wash, and professional kitchen cleaning.', 'Restroom · Carpet · Hand care · Kitchen'],
+  ['Food & beverage production', 'Process cleaning for enclosed equipment, open plant areas, and membranes.', 'Cleaning-in-place · Open plant · Membranes'],
+  ['Life sciences hygiene', 'Controlled-area cleaning and residue removal for technical environments.', 'Controlled areas · Residue removal'],
+  ['Water treatment', 'Product directions for reverse osmosis, boiler-water, and cooling-water programs.', 'Reverse osmosis · Boiler · Cooling'],
+]
+
+function ApplicationAreas() {
+  return <section className="sectors section-space" aria-labelledby="sectors-title"><div className="wrap"><div className="section-heading"><p className="kicker">Explore by environment</p><h2 id="sectors-title">A wider view of the work.</h2><p>Browse Kelvin products by the setting and cleaning task that matter to your operation.</p></div><div className="sectors__list">{sectors.map(([name, detail, examples], index) => <a className="sectors__row" key={name} href={`/products.html?family=${encodeURIComponent(name)}`}><span className="sectors__number">{String(index + 1).padStart(2, '0')}</span><span className="sectors__name">{name}</span><span className="sectors__details">{detail}<small>{examples}</small></span><Arrow diagonal /></a>)}</div></div></section>
+}
+
 function About() {
   return <section className="about" id="about" aria-labelledby="about-title">
     <div className="wrap about__grid">
@@ -172,7 +183,7 @@ function Principles() {
 function Faq() {
   const questions = [
     ['Where is Kelvin based?', 'Kelvin has an office in Dubai. Manufacturing is in Khalifa Economic Zones Abu Dhabi (KEZAD). Call +971 4 608 1235 or contact us on WhatsApp at +971 4 608 1236.'],
-    ['Can I browse the full catalogue here?', 'Yes. The catalogue shows Kelvin’s current priority range alongside concepts still being developed. Request the matching technical documents for product use.'],
+    ['Can I browse the full catalogue here?', 'Yes. Browse Kelvin products by application and request the matching technical documents for product use.'],
     ['How can I ask about a specific application?', 'Complete the enquiry form to open WhatsApp with your details, then review and send the message to Kelvin.'],
   ]
   return <section className="faq section-space" id="faq" aria-labelledby="faq-title"><div className="wrap faq__grid"><div><p className="kicker">Good to know</p><h2 id="faq-title">Questions about Kelvin</h2></div><div className="faq__items">{questions.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div></section>
@@ -196,7 +207,6 @@ function ProductCard({ product }) {
   return <motion.article className="product-card" initial="rest" whileHover={reduceMotion ? undefined : 'hover'}>
     <div className="product-card__image">
       <motion.img src={`/products/${product.id.toLowerCase()}.webp`} alt={`Kelvin ${product.name} container`} loading="lazy" variants={{ rest: { y: 0, scale: 1, rotate: 0 }, hover: { y: -11, scale: 1.045, rotate: -1 } }} transition={{ type: 'spring', stiffness: 190, damping: 20 }} />
-      <span className="product-card__status">{product.current ? 'Current range' : 'Concept'}</span>
     </div>
     <div className="product-card__copy"><span>{product.family} · {product.id}</span><h3>{product.name}</h3><p>{product.description}</p></div>
   </motion.article>
@@ -282,11 +292,14 @@ function Featured() {
 
 function CataloguePage() {
   const [query, setQuery] = React.useState('')
-  const [family, setFamily] = React.useState('All')
+  const [family, setFamily] = React.useState(() => {
+    const requested = new URLSearchParams(window.location.search).get('family')
+    return products.some((product) => product.family === requested) ? requested : 'All'
+  })
   const [page, setPage] = React.useState(1)
   const gridRef = React.useRef(null)
   const families = ['All', ...new Set(products.map((product) => product.family))]
-  const filtered = products.filter((product) => (family === 'All' || product.family === family) && `${product.name} ${product.application} ${product.id}`.toLowerCase().includes(query.toLowerCase().trim()))
+  const filtered = products.filter((product) => (family === 'All' || product.family === family) && `${product.name} ${product.family} ${product.application} ${product.id}`.toLowerCase().includes(query.toLowerCase().trim()))
   const pageSize = 9
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize))
   const current = Math.min(page, pageCount)
@@ -298,7 +311,7 @@ function CataloguePage() {
     gridRef.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
   }
 
-  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore the current Kelvin products alongside developing floor care, laundry, warewashing, and surface-care concepts. Request product-specific technical documents before use.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination"><button type="button" onClick={() => goToPage(current - 1)} disabled={current === 1} aria-label="Previous page"><Arrow left /></button>{Array.from({ length: pageCount }, (_, index) => <button key={index} type="button" aria-current={current === index + 1 ? 'page' : undefined} onClick={() => goToPage(index + 1)}>{index + 1}</button>)}<button type="button" onClick={() => goToPage(current + 1)} disabled={current === pageCount} aria-label="Next page"><Arrow /></button></nav>}<p className="catalogue__disclaimer">For directions, hazards, and specifications, request the matching Kelvin technical documents before use.</p></div></section><Contact /></>
+  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore Kelvin’s products across commercial cleaning, food and beverage production, life sciences hygiene, and water treatment. Request product-specific technical documents before use.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination"><button type="button" onClick={() => goToPage(current - 1)} disabled={current === 1} aria-label="Previous page"><Arrow left /></button>{Array.from({ length: pageCount }, (_, index) => <button key={index} type="button" aria-current={current === index + 1 ? 'page' : undefined} onClick={() => goToPage(index + 1)}>{index + 1}</button>)}<button type="button" onClick={() => goToPage(current + 1)} disabled={current === pageCount} aria-label="Next page"><Arrow /></button></nav>}<p className="catalogue__disclaimer">For directions, hazards, and specifications, request the matching Kelvin technical documents before use.</p></div></section><Contact /></>
 }
 
 function PrivacyPage() {
@@ -308,7 +321,8 @@ function PrivacyPage() {
 function App() {
   const isCatalogue = window.location.pathname.endsWith('/products.html')
   const isPrivacy = window.location.pathname.endsWith('/privacy.html')
-  return <><Background /><div className="site"><Header /><main>{isPrivacy ? <PrivacyPage /> : isCatalogue ? <CataloguePage /> : <><Hero /><Range /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
+  return <><Background /><div className="site"><Header /><main>{isPrivacy ? <PrivacyPage /> : isCatalogue ? <CataloguePage /> : <><Hero /><Range /><ApplicationAreas /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
 }
 
 createRoot(document.getElementById('root')).render(<MotionConfig reducedMotion="user"><App /></MotionConfig>)
+
