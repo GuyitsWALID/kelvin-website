@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { AnimatePresence, MotionConfig, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { startDotField } from './dotField'
 import products from './catalogue.json'
+import RangeAnatomy from './anatomy/RangeAnatomy'
 import { whatsappEnquiryUrl, whatsappNumber } from './whatsapp'
 import './styles.css'
 
@@ -13,25 +14,21 @@ const families = [
     name: 'Laundry care',
     scope: 'For professional textile care workflows',
     detail: 'Explore solutions by stage of the wash process, fabric need, and operating environment.',
-    shape: 'laundry',
   },
   {
     name: 'Kitchen & warewashing',
     scope: 'For busy food-service operations',
     detail: 'Find a starting point for dish, utensil, and kitchen cleaning enquiries.',
-    shape: 'kitchen',
   },
   {
     name: 'Surface care',
     scope: 'For shared and high-use spaces',
     detail: 'Browse by surface and cleaning task to find the right Kelvin range.',
-    shape: 'surface',
   },
   {
     name: 'Disinfection',
     scope: 'For hygiene-focused applications',
     detail: 'Discuss your application with Kelvin to identify the appropriate approved product information.',
-    shape: 'disinfection',
   },
 ]
 
@@ -143,8 +140,8 @@ function Range() {
         </div>
         <div className="range__visual" aria-live="polite">
           <AnimatePresence mode="wait">
-            <motion.div key={active} className={`range__visual-inner shape--${families[active].shape}`} initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} transition={{ duration: 0.32 }}>
-              <div className="range__form" aria-hidden="true"><span /><span /><span /></div>
+            <motion.div key={active} className="range__visual-inner" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 1.02 }} transition={{ duration: 0.32 }}>
+              <RangeAnatomy index={active} />
               <div className="range__visual-copy"><span>Application focus</span><h3>{families[active].name}</h3><p>{families[active].detail}</p></div>
             </motion.div>
           </AnimatePresence>
