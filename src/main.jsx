@@ -209,18 +209,6 @@ function ProductCard({ product }) {
   </motion.article>
 }
 
-function useMediaQuery(query) {
-  const [matches, setMatches] = React.useState(() => window.matchMedia(query).matches)
-  React.useEffect(() => {
-    const list = window.matchMedia(query)
-    const update = () => setMatches(list.matches)
-    update()
-    list.addEventListener('change', update)
-    return () => list.removeEventListener('change', update)
-  }, [query])
-  return matches
-}
-
 function CarouselCard({ product, index, count, progress, spacing, active }) {
   const offset = useTransform(() => {
     const wrapped = ((index - progress.get() * count) % count + count) % count
@@ -268,7 +256,7 @@ function FeaturedCarousel({ items, heading }) {
     setActive((current) => current === next ? current : next)
   })
 
-  return <div className="featured-carousel" ref={trackRef} style={{ height: `calc(100svh + ${count * 26}svh)` }}>
+  return <div className="featured-carousel" ref={trackRef} style={{ '--carousel-wide-distance': `${count * 10}svh`, '--carousel-mobile-distance': `${count * 26}svh` }}>
     <div className="featured-carousel__sticky">
       <div className="featured-carousel__heading">{heading}</div>
       <div className="featured-carousel__stage" ref={stageRef}>
@@ -280,11 +268,9 @@ function FeaturedCarousel({ items, heading }) {
 }
 
 function Featured() {
-  const isMobile = useMediaQuery('(max-width: 820px)')
   const featured = products.filter((product) => product.featured)
-  const showCarousel = isMobile
   const heading = <div className="featured__heading"><div><p className="kicker">Current Kelvin range</p><h2 id="featured-title">A closer look at the range.</h2></div><p>The priority products shared for Kelvin’s refreshed catalogue. Technical details are available on request.</p></div>
-  return <section className="featured section-space" aria-labelledby="featured-title"><div className="wrap">{showCarousel ? <FeaturedCarousel items={featured} heading={heading} /> : <>{heading}<div className="featured__grid">{featured.map((product) => <ProductCard key={product.id} product={product} />)}</div></>}<a className="text-link featured__link" href="/products.html">View the full catalogue <Arrow /></a></div></section>
+  return <section className="featured section-space" aria-labelledby="featured-title"><div className="wrap"><FeaturedCarousel items={featured} heading={heading} /><a className="text-link featured__link" href="/products.html">View the full catalogue <Arrow /></a></div></section>
 }
 
 function CataloguePage() {
