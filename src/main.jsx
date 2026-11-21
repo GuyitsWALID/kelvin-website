@@ -45,7 +45,7 @@ function Background() {
   const activity = useSpring(0, { stiffness: 90, damping: 22 })
 
   React.useEffect(() => {
-    if (reduceMotion) return
+    if (reduceMotion || window.matchMedia('(hover: none)').matches) return
     const stop = startDotField(canvas.current, x, y, activity)
     let settle
     const move = (event) => {

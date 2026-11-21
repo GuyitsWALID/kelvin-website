@@ -29,14 +29,16 @@ The owner also ran PageSpeed Insights on the live homepage on 21 November. These
 | Total Blocking Time | 70 ms | 40 ms |
 | Cumulative Layout Shift | 0.018 | 0 |
 
-PageSpeed's largest flagged opportunity was image delivery (estimated savings about 1,606 KiB mobile and 2,487 KiB desktop). The site-wide background PNG was 1,815,684 bytes. It has been visually checked, re-encoded as a 124,406-byte WebP, and preloaded from each page head, saving about 1.61 MiB per request. This asset change was deployed and the new WebP returned HTTP 200. An independent Lighthouse run identified the hero H1 as its LCP element; the previous server HTML hid that heading with `opacity:0` until JavaScript hydrated. The heading now renders visibly in the initial HTML. The local run used different test conditions from PageSpeed, so its score is not compared with the baseline above. Rerun PageSpeed after this heading fix deploys before claiming a measured speed gain.
+PageSpeed's largest flagged opportunity was image delivery (estimated savings about 1,606 KiB mobile and 2,487 KiB desktop). The site-wide background PNG was 1,815,684 bytes. It has been visually checked, re-encoded as a 124,406-byte WebP, and preloaded from each page head, saving about 1.61 MiB per request. This asset change was deployed and the new WebP returned HTTP 200. An independent Lighthouse run identified the hero H1 as its LCP element; the previous server HTML hid that heading with `opacity:0` until JavaScript hydrated. The heading now renders visibly in the deployed initial HTML. The local run used different test conditions from PageSpeed, so its score is not compared with the baseline above.
+
+A repeat local Lighthouse run still could not calculate a reliable performance score because its emulated phone CPU never reached an idle period. The full-screen WebGL animation was running continuously, even on touch devices without mouse hover. The site now keeps its static background on non-hover devices and starts the WebGL effect only where hover is available. This change also needs a post-deploy lab check; the incomplete local run is not treated as a comparable score.
 
 ## Monday account-side checks
 
 1. In Google Search Console, revisit the Pages report once processing finishes, then inspect the homepage and catalogue URLs. Request indexing for eligible pages if needed. The domain property and sitemap submission are complete.
 2. Add the site to Bing Webmaster Tools and submit the same sitemap.
 3. Inspect the homepage and catalogue on a real mobile browser after deployment, including pagination, filters, and the WhatsApp handoff.
-4. After deploying the visible hero heading, rerun PageSpeed Insights on mobile and desktop and compare with the baseline above. Investigate image delivery details if the 11.7-second mobile LCP remains. Interaction to Next Paint requires field data and is not available yet.
+4. After deploying the touch-device background change, rerun PageSpeed Insights on mobile and desktop and compare with the baseline above. Investigate image delivery details if the 11.7-second mobile LCP remains. Interaction to Next Paint requires field data and is not available yet.
 5. If Kelvin has an eligible staffed location and an owner-approved address, set up or update its Google Business Profile. Use the same company name, phone, and location details as the website.
 
 ## Content work after launch
