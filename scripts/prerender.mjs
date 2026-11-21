@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server'
 import { MotionConfig } from 'motion/react'
 import { createServer } from 'vite'
 
-const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error' })
+const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error', optimizeDeps: { noDiscovery: true } })
 
 try {
   const { App } = await vite.ssrLoadModule('/src/main.jsx')
