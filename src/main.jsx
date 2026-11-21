@@ -8,6 +8,48 @@ import { whatsappEnquiryUrl, whatsappNumber } from './whatsapp'
 import './styles.css'
 
 const asset = '/assets/'
+const industryPages = [
+  {
+    name: 'Commercial cleaning', path: '/commercial-cleaning.html', family: 'Commercial cleaning',
+    heading: 'Commercial cleaning products for the work behind busy spaces.',
+    intro: 'Explore Kelvin products for washrooms, carpets, workplace hand-wash stations, and professional kitchen equipment. Start with the cleaning task, then ask Kelvin for the matching product information.',
+    guidance: [
+      ['Washrooms and hand care', 'Restroom Bowl Cleaner is listed for commercial washrooms, while Professional Hand Wash is listed for workplace hand-wash stations. Identify the surface and the people using the space when you enquire.'],
+      ['Carpet and kitchen tasks', 'Carpet Extraction Cleaner is listed for machine extraction. Oven and Grill Cleaner is listed for cooking equipment in professional kitchens. The method and equipment should be checked against product-specific directions.'],
+      ['Before use', 'Tell Kelvin about the surface, cleaning method, and working environment. Request current directions, hazards, and specifications for the product you are considering.'],
+    ],
+  },
+  {
+    name: 'Food & beverage production', path: '/food-beverage-cleaning.html', family: 'Food & beverage production',
+    heading: 'Cleaning chemicals for food and beverage production.',
+    intro: 'Kelvin lists products for cleaning-in-place, open plant cleaning, and process membranes. These are different cleaning tasks, so the equipment and application should guide the enquiry.',
+    guidance: [
+      ['Enclosed equipment', 'The range includes CIP Alkaline Cleaner and CIP Acid Cleaner for cleaning stages in enclosed process equipment. Ask for the current technical directions before selecting a stage or process.'],
+      ['Accessible surfaces', 'Open Plant Foam Cleaner is listed for foam cleaning of accessible production surfaces. Describe the area, cleaning method, and equipment when contacting Kelvin.'],
+      ['Process membranes', 'Process Membrane Cleaner is listed for food-production membrane cleaning. Confirm membrane compatibility and the required procedure with Kelvin’s technical documentation before use.'],
+    ],
+  },
+  {
+    name: 'Life sciences hygiene', path: '/life-sciences-hygiene.html', family: 'Life sciences hygiene',
+    heading: 'Life sciences hygiene products for controlled-area cleaning.',
+    intro: 'Kelvin lists a controlled-area detergent and a residue-removal cleaner. Selection for a life sciences environment requires a technical review of the exact area, process, and product documents.',
+    guidance: [
+      ['Controlled-area cleaning', 'Controlled Area Detergent is listed for controlled-area surfaces. The listing does not establish suitability for a particular cleanroom, process, or validation program.'],
+      ['Residue removal', 'Cleanroom Residue Remover is listed for residue-removal tasks in controlled environments. Tell Kelvin what residue and surface are involved before discussing a product.'],
+      ['Technical review first', 'Request the matching product directions, hazards, and specifications. Confirm documented suitability before deciding whether either product fits a controlled-area protocol.'],
+    ],
+  },
+  {
+    name: 'Water treatment', path: '/water-treatment.html', family: 'Water treatment',
+    heading: 'Water treatment products for reverse osmosis, boiler, and cooling-water programs.',
+    intro: 'Explore the Kelvin range by water-treatment system and maintenance task. The listed products cover reverse-osmosis membrane cleaning and scale control, boiler deposit control, and cooling-water scale control.',
+    guidance: [
+      ['Reverse osmosis', 'RO Membrane Cleaner and RO Scale Control are listed for distinct reverse-osmosis tasks. Share the system and membrane details when requesting technical information.'],
+      ['Boiler water', 'Boiler Deposit Control is listed for deposit management in boiler-water programs. Ask Kelvin for the product-specific information relevant to your system.'],
+      ['Cooling water', 'Cooling Scale Control is listed for scale management in cooling-water programs. Confirm application details, directions, and hazards before use.'],
+    ],
+  },
+]
 
 const families = [
   {
@@ -79,6 +121,7 @@ function Header() {
   const [open, setOpen] = React.useState(false)
   const links = [
     ['Products', '/products.html'],
+    ['Industries', '/#industries'],
     ['About Kelvin', '/#about'],
     ['FAQ', '/#faq'],
     ['Contact', '/#contact'],
@@ -154,14 +197,14 @@ function Range() {
 }
 
 const sectors = [
-  ['Commercial cleaning', 'Building care, carpet extraction, workplace hand wash, and professional kitchen cleaning.', 'Restroom · Carpet · Hand care · Kitchen'],
-  ['Food & beverage production', 'Process cleaning for enclosed equipment, open plant areas, and membranes.', 'Cleaning-in-place · Open plant · Membranes'],
-  ['Life sciences hygiene', 'Controlled-area cleaning and residue removal for technical environments.', 'Controlled areas · Residue removal'],
-  ['Water treatment', 'Product directions for reverse osmosis, boiler-water, and cooling-water programs.', 'Reverse osmosis · Boiler · Cooling'],
+  ['Building care, carpet extraction, workplace hand wash, and professional kitchen cleaning.', 'Restroom · Carpet · Hand care · Kitchen'],
+  ['Process cleaning for enclosed equipment, open plant areas, and membranes.', 'Cleaning-in-place · Open plant · Membranes'],
+  ['Controlled-area cleaning and residue removal for technical environments.', 'Controlled areas · Residue removal'],
+  ['Product directions for reverse osmosis, boiler-water, and cooling-water programs.', 'Reverse osmosis · Boiler · Cooling'],
 ]
 
 function ApplicationAreas() {
-  return <section className="sectors section-space" aria-labelledby="sectors-title"><div className="wrap"><div className="section-heading"><p className="kicker">Explore by environment</p><h2 id="sectors-title">A wider view of the work.</h2><p>Browse Kelvin products by the setting and cleaning task that matter to your operation.</p></div><div className="sectors__list">{sectors.map(([name, detail, examples], index) => <a className="sectors__row" key={name} href={`/products.html?family=${encodeURIComponent(name)}`}><span className="sectors__number">{String(index + 1).padStart(2, '0')}</span><span className="sectors__name">{name}</span><span className="sectors__details">{detail}<small>{examples}</small></span><Arrow diagonal /></a>)}</div></div></section>
+  return <section className="sectors section-space" id="industries" aria-labelledby="sectors-title"><div className="wrap"><div className="section-heading"><p className="kicker">Explore by environment</p><h2 id="sectors-title">A wider view of the work.</h2><p>Browse Kelvin products by the setting and cleaning task that matter to your operation.</p></div><div className="sectors__list">{industryPages.map((page, index) => <a className="sectors__row" key={page.path} href={page.path}><span className="sectors__number">{String(index + 1).padStart(2, '0')}</span><span className="sectors__name">{page.name}</span><span className="sectors__details">{sectors[index][0]}<small>{sectors[index][1]}</small></span><Arrow diagonal /></a>)}</div></div></section>
 }
 
 function About() {
@@ -196,7 +239,7 @@ function Contact() {
 }
 
 function Footer() {
-  return <footer className="footer"><div className="wrap"><div className="footer__top"><a href="/" aria-label="Kelvin home"><img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" width="1602" height="566" /></a><p>Cleaning chemistry for a changing world.</p><div className="footer__contact"><span>Contact Kelvin</span><a href="tel:+97146081235">Tel: +971 4 608 1235</a><a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp: +971 4 608 1236</a></div></div><div className="footer__bottom"><span>© {new Date().getFullYear()} Kelvin.</span><nav aria-label="Footer navigation"><a href="/products.html">Products</a><a href="/#about">About</a><a href="/#faq">FAQ</a><a href="/#contact">Contact</a><a href="/privacy.html">Privacy</a></nav></div></div></footer>
+  return <footer className="footer"><div className="wrap"><div className="footer__top"><a href="/" aria-label="Kelvin home"><img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" width="1602" height="566" /></a><p>Cleaning chemistry for a changing world.</p><div className="footer__contact"><span>Contact Kelvin</span><a href="tel:+97146081235">Tel: +971 4 608 1235</a><a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp: +971 4 608 1236</a></div></div><div className="footer__bottom"><span>© {new Date().getFullYear()} Kelvin.</span><nav aria-label="Footer navigation"><a href="/products.html">Products</a><a href="/#industries">Industries</a><a href="/#about">About</a><a href="/#faq">FAQ</a><a href="/#contact">Contact</a><a href="/privacy.html">Privacy</a></nav></div></div></footer>
 }
 
 function ProductCard({ product }) {
@@ -273,6 +316,17 @@ function Featured() {
   return <section className="featured section-space" aria-labelledby="featured-title"><div className="wrap"><FeaturedCarousel items={featured} heading={heading} /><a className="text-link featured__link" href="/products.html">View the full catalogue <Arrow /></a></div></section>
 }
 
+function IndustryPage({ page }) {
+  const matching = products.filter((product) => product.family === page.family)
+  return <>
+    <section className="catalogue-hero industry-hero"><div className="wrap"><p className="kicker">Kelvin · {page.name}</p><h1>{page.heading}</h1><p>{page.intro}</p><p className="industry-hero__location">Kelvin has an office in Dubai and manufacturing in KEZAD, Abu Dhabi.</p><div className="industry-hero__actions"><a className="button button--blue" href="#contact">Ask Kelvin about this range <Arrow diagonal /></a><a className="text-link" href={`/products.html?family=${encodeURIComponent(page.family)}`}>View the catalogue <Arrow /></a></div></div></section>
+    <section className="industry section-space" aria-labelledby="industry-guidance-title"><div className="wrap"><div className="section-heading"><p className="kicker">Application guide</p><h2 id="industry-guidance-title">Start with the task.</h2><p>Use the setting and cleaning method to frame your enquiry. Kelvin can provide current product-specific documents.</p></div><div className="industry__guidance">{page.guidance.map(([title, detail], index) => <article key={title}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{detail}</p></article>)}</div></div></section>
+    <section className="industry-products section-space" aria-labelledby="industry-products-title"><div className="wrap"><div className="section-heading"><p className="kicker">Kelvin catalogue</p><h2 id="industry-products-title">Products in this range.</h2><p>These listings describe the intended application area. Request the matching technical information before use.</p></div><div className="industry-products__grid">{matching.map((product) => <ProductCard key={product.id} product={product} />)}</div><a className="text-link industry-products__link" href={`/products.html?family=${encodeURIComponent(page.family)}`}>Browse {page.name.toLowerCase()} products <Arrow /></a></div></section>
+    <nav className="industry-other section-space" aria-label="Other industries"><div className="wrap"><p className="kicker">Explore another environment</p><div className="industry-other__links">{industryPages.filter((other) => other.path !== page.path).map((other) => <a key={other.path} href={other.path}>{other.name}<Arrow diagonal /></a>)}</div></div></nav>
+    <Contact />
+  </>
+}
+
 function CataloguePage({ initialPage = 1 }) {
   const [query, setQuery] = React.useState('')
   const [family, setFamily] = React.useState('All')
@@ -304,7 +358,7 @@ function CataloguePage({ initialPage = 1 }) {
       : <a key={ariaLabel || number} {...common} href={pageHref(number)}>{label}</a>
   }
 
-  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore Kelvin’s products across commercial cleaning, food and beverage production, life sciences hygiene, and water treatment. Request product-specific technical documents before use.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination">{pageControl(current - 1, <Arrow left />, 'Previous page', current === 1)}{Array.from({ length: pageCount }, (_, index) => pageControl(index + 1, index + 1))}{pageControl(current + 1, <Arrow />, 'Next page', current === pageCount)}</nav>}<p className="catalogue__disclaimer">For directions, hazards, and specifications, request the matching Kelvin technical documents before use.</p></div></section><Contact /></>
+  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore Kelvin’s products across commercial cleaning, food and beverage production, life sciences hygiene, and water treatment. Request product-specific technical documents before use.</p><div className="catalogue-hero__industries" aria-label="Browse industry pages">{industryPages.map((page) => <a key={page.path} href={page.path}>{page.name}<Arrow diagonal /></a>)}</div></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination">{pageControl(current - 1, <Arrow left />, 'Previous page', current === 1)}{Array.from({ length: pageCount }, (_, index) => pageControl(index + 1, index + 1))}{pageControl(current + 1, <Arrow />, 'Next page', current === pageCount)}</nav>}<p className="catalogue__disclaimer">For directions, hazards, and specifications, request the matching Kelvin technical documents before use.</p></div></section><Contact /></>
 }
 
 function PrivacyPage() {
@@ -315,7 +369,8 @@ export function App({ path = typeof window === 'undefined' ? '/' : window.locati
   const cataloguePage = path.match(/^\/products(?:-page-(\d+))?\.html$/)
   const isCatalogue = Boolean(cataloguePage)
   const isPrivacy = path.endsWith('/privacy.html')
-  return <><Background /><div className="site"><Header /><main>{isPrivacy ? <PrivacyPage /> : isCatalogue ? <CataloguePage initialPage={Number(cataloguePage[1] || 1)} /> : <><Hero /><Range /><ApplicationAreas /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
+  const industry = industryPages.find((page) => page.path === path)
+  return <><Background /><div className="site"><Header /><main>{isPrivacy ? <PrivacyPage /> : isCatalogue ? <CataloguePage initialPage={Number(cataloguePage[1] || 1)} /> : industry ? <IndustryPage page={industry} /> : <><Hero /><Range /><ApplicationAreas /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
 }
 
 if (typeof document !== 'undefined') {
