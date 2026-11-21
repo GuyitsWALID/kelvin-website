@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kelvin-website-one.vercel.app/sitemap.xml
+Sitemap: https://kelvinchem.ae/sitemap.xml

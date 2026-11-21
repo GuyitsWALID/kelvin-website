@@ -21,7 +21,7 @@ The enquiry form opens WhatsApp at +971 4 608 1236 with a prefilled message. The
 
 ## Search and deployment
 
-The current canonical address is `https://kelvin-website-one.vercel.app/`. `robots.txt`, `sitemap.xml`, and the page metadata use this address. Update all three when Kelvin moves to a custom domain.
+The canonical address is `https://kelvinchem.ae/`. The `www` hostname redirects permanently to it. `robots.txt`, `sitemap.xml`, and page metadata use the same address. The site is deployed through Vercel; DNS is managed at AEserver.
 
 Built with React, Vite, WebGL2, and [Motion for React](https://motion.dev/docs/react). The background uses a static fallback when WebGL2 is unavailable or reduced motion is preferred. Rendering pauses when the tab is hidden, and touch devices use a lower drawing rate.
 
