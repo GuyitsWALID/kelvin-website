@@ -67,6 +67,8 @@ Bing Webmaster Tools is pending by the owner's choice. Its Google sign-in would 
 
 ## Content work after launch
 
+The owner confirmed **Kelvin Chemical Industries** as the registered name on 22 November. The homepage now uses it in the title, description, About copy, and Organization `legalName`; the shorter **Kelvin** remains the visual brand and is declared in `WebSite` structured data as the preferred site name. This responds to a brand search that instead surfaced unrelated companies with similar names. It gives Google consistent first-party identity information, but neither a first-page ranking nor a specific AI Overview is guaranteed. The production build and generated HTML checks passed. Google must recrawl the homepage before any search-result change can be assessed. [Google site-name guidance](https://developers.google.com/search/docs/appearance/site-names), [Organization data guidance](https://developers.google.com/search/docs/appearance/structured-data/organization).
+
 - Use Search Console queries to choose the strongest category and product topics. The initial targets are professional cleaning chemicals in the UAE, commercial floor care, laundry care, warewashing, and cleaning products for food production. These are topic hypotheses, not measured search volumes.
 - Individual product pages should wait for unique, verified technical information. Forty-eight near-identical pages based only on one-sentence descriptions would add little value.
 - Publish original manufacturing information, real facility photography, product documents, and application guidance when Kelvin supplies and approves them. These are stronger trust signals than unsupported performance claims.

@@ -211,7 +211,7 @@ function About() {
   return <section className="about" id="about" aria-labelledby="about-title">
     <div className="wrap about__grid">
       <div className="about__number"><strong>9</strong><span>years since founding</span></div>
-      <div className="about__copy"><p className="kicker">A new chapter</p><h2 id="about-title">Nine years in. A clearer way forward.</h2><p>Kelvin's office is in Dubai, with manufacturing in Khalifa Economic Zones Abu Dhabi (KEZAD). The new identity brings its product range and company story into clearer focus.</p><a className="text-link text-link--light" href="#contact">Contact Kelvin <Arrow /></a></div>
+      <div className="about__copy"><p className="kicker">A new chapter</p><h2 id="about-title">Nine years in. A clearer way forward.</h2><p>Kelvin Chemical Industries has an office in Dubai, with manufacturing in Khalifa Economic Zones Abu Dhabi (KEZAD). The new identity brings its product range and company story into clearer focus.</p><a className="text-link text-link--light" href="#contact">Contact Kelvin <Arrow /></a></div>
     </div>
   </section>
 }
