@@ -87,7 +87,7 @@ function Header() {
   return <header className="header" id="top">
     <div className="header__inner wrap">
       <a className="logo" href="/" aria-label="Kelvin home" onClick={() => setOpen(false)}>
-        <img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" />
+        <img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" width="1602" height="566" />
       </a>
       <nav className="desktop-nav" aria-label="Main navigation">
         {links.map(([label, href]) => <a key={href} href={href}>{label}</a>)}
@@ -196,7 +196,7 @@ function Contact() {
 }
 
 function Footer() {
-  return <footer className="footer"><div className="wrap"><div className="footer__top"><a href="/" aria-label="Kelvin home"><img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" /></a><p>Cleaning chemistry for a changing world.</p><div className="footer__contact"><span>Contact Kelvin</span><a href="tel:+97146081235">Tel: +971 4 608 1235</a><a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp: +971 4 608 1236</a></div></div><div className="footer__bottom"><span>© {new Date().getFullYear()} Kelvin.</span><nav aria-label="Footer navigation"><a href="/products.html">Products</a><a href="/#about">About</a><a href="/#faq">FAQ</a><a href="/#contact">Contact</a><a href="/privacy.html">Privacy</a></nav></div></div></footer>
+  return <footer className="footer"><div className="wrap"><div className="footer__top"><a href="/" aria-label="Kelvin home"><img src={`${asset}kelvin-full-logo.svg`} alt="Kelvin" width="1602" height="566" /></a><p>Cleaning chemistry for a changing world.</p><div className="footer__contact"><span>Contact Kelvin</span><a href="tel:+97146081235">Tel: +971 4 608 1235</a><a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp: +971 4 608 1236</a></div></div><div className="footer__bottom"><span>© {new Date().getFullYear()} Kelvin.</span><nav aria-label="Footer navigation"><a href="/products.html">Products</a><a href="/#about">About</a><a href="/#faq">FAQ</a><a href="/#contact">Contact</a><a href="/privacy.html">Privacy</a></nav></div></div></footer>
 }
 
 function ProductCard({ product }) {
