@@ -1,6 +1,6 @@
 # Kelvin search launch handoff
 
-Updated 21 November 2026. This audit follows the [SEO Audit](https://github.com/coreyhaines31/marketingskills/blob/main/skills/seo-audit/SKILL.md) and [SEO/GEO](https://github.com/resciencelab/opc-skills/blob/main/skills/seo-geo/SKILL.md) workflows listed in [Awesome SEO Skills](https://github.com/screpylabs/awesome-seo-skills). Recommendations were checked against current search-engine documentation.
+Updated 22 November 2026. This audit follows the [SEO Audit](https://github.com/coreyhaines31/marketingskills/blob/main/skills/seo-audit/SKILL.md) and [SEO/GEO](https://github.com/resciencelab/opc-skills/blob/main/skills/seo-geo/SKILL.md) workflows listed in [Awesome SEO Skills](https://github.com/screpylabs/awesome-seo-skills). Recommendations were checked against current search-engine documentation.
 
 ## Completed in the site
 
@@ -48,13 +48,21 @@ PageSpeed's largest flagged opportunity was image delivery (estimated savings ab
 
 A repeat local Lighthouse run still could not calculate a reliable performance score because its emulated phone CPU never reached an idle period. The full-screen WebGL animation was running continuously, even on touch devices without mouse hover. The site now keeps its static background on non-hover devices and starts the WebGL effect only where hover is available. This change is deployed. A later local rerun ended with a browser `NO_FCP` error. Neither incomplete local result is compared with the official PageSpeed results above.
 
-## Monday account-side checks
+## Industry-page release — 22 November
 
-1. In Google Search Console, revisit the Pages report once processing finishes, then inspect the remaining catalogue URLs and Google's selected canonicals. The homepage is indexed; the main catalogue has already been requested for indexing. The domain property and sitemap submission are complete.
-2. Add the site to Bing Webmaster Tools and submit the same sitemap.
-3. Inspect the homepage and catalogue on a real mobile browser after deployment, including pagination, filters, and the WhatsApp handoff.
-4. Monitor the Search Console Core Web Vitals report as real-user field data becomes available. Interaction to Next Paint cannot be assessed from these lab screenshots. Rerun PageSpeed after future changes to catch regressions.
-5. If Kelvin has an eligible staffed location and an owner-approved address, set up or update its Google Business Profile. Use the same company name, phone, and location details as the website.
+Four live pages now map distinct industry enquiries to approved Kelvin products: [commercial cleaning](https://kelvinchem.ae/commercial-cleaning.html), [food and beverage production](https://kelvinchem.ae/food-beverage-cleaning.html), [life sciences hygiene](https://kelvinchem.ae/life-sciences-hygiene.html), and [water treatment](https://kelvinchem.ae/water-treatment.html). The life sciences page asks for technical review before selection. Each page has unique metadata and H1, a self-canonical, useful initial HTML, matching product packshots, and an enquiry route. Homepage and catalogue links now lead to the pages, and the sitemap lists **12 URLs**. Catalogue pages 2–6 have page-specific descriptions. The production build, page metadata and link checks, mobile layout checks, and live HTTP checks passed. [SEO_FULL_AUDIT.md](SEO_FULL_AUDIT.md) records the product map and verification details.
+
+The official [22 November PageSpeed Insights run](https://pagespeed.web.dev/analysis/https-kelvinchem-ae/6zpxfw6uqa?form_factor=mobile) measured **93 mobile / 100 desktop Performance**, with **100 Accessibility, Best Practices, and SEO** on both. Mobile FCP/LCP were 2.1 s, TBT 20 ms, CLS 0; desktop FCP/LCP were 0.5 s, TBT 10 ms, CLS 0.003. These are lab measurements; PageSpeed reported no real-user field data. The prior mobile 99 was a different lab run.
+
+Search Console previously showed the eight-URL sitemap as Success. Its signed-in browser controller timed out during this release, so the eight original URL statuses and Google-selected canonicals, the 12-URL sitemap read status, and query/link reports have **not** been confirmed. Bing Webmaster Tools submission is also unconfirmed. No public company/domain reference could be verified in a limited exact-match web search; that does not establish a backlink count.
+
+## Remaining account-side checks
+
+1. In Google Search Console, inspect the eight original URLs once and record index status and Google's selected canonical. The homepage was indexed on 21 November; the main catalogue has already been requested for indexing. Investigate any actual exclusion reason before changing the site.
+2. Confirm the existing sitemap entry has read the current 12-URL XML. Resubmit the same sitemap URL if the read status remains stale. A successful sitemap does not prove indexing.
+3. Add or verify the site in Bing Webmaster Tools and submit the same sitemap URL.
+4. Monitor Search Console indexed URLs, queries, links, and Core Web Vitals as reports populate. Rerun PageSpeed after future changes to catch regressions; Interaction to Next Paint needs field data.
+5. Audit any real public company profiles against Kelvin's confirmed name, domain, telephone, and location. Kelvin has confirmed no in-person customer contact, so a Google Business Profile is ineligible under the current arrangement per [Google's eligibility rules](https://support.google.com/business/answer/13763036).
 
 ## Content work after launch
 
