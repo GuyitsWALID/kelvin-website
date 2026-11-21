@@ -1,5 +1,5 @@
 import React from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { AnimatePresence, MotionConfig, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { startDotField } from './dotField'
 import products from './catalogue.json'
@@ -112,7 +112,7 @@ function Hero() {
     <div className="hero__body">
       <motion.p className="hero__eyebrow" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>Dubai · Cleaning & disinfectant chemistry</motion.p>
       <motion.h1 id="hero-title" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08 }}>A cleaner future starts with the work we do today.</motion.h1>
-      <motion.p className="hero__intro" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.16 }}>Kelvin brings nine years of experience to professional cleaning. Explore our current products and find the right conversation for your business.</motion.p>
+      <motion.p className="hero__intro" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.16 }}>Kelvin provides professional cleaning and disinfectant products, with an office in Dubai and manufacturing in KEZAD, Abu Dhabi. Explore the range for your business.</motion.p>
       <motion.div className="hero__actions" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.24 }}>
         <a className="button button--blue" href="/products.html">Explore the range <Arrow diagonal /></a>
         <a className="text-link" href="#about">Discover Kelvin <Arrow /></a>
@@ -269,17 +269,18 @@ function FeaturedCarousel({ items, heading }) {
 
 function Featured() {
   const featured = products.filter((product) => product.featured)
-  const heading = <div className="featured__heading"><div><p className="kicker">Current Kelvin range</p><h2 id="featured-title">A closer look at the range.</h2></div><p>The priority products shared for Kelvin’s refreshed catalogue. Technical details are available on request.</p></div>
+  const heading = <div className="featured__heading"><div><p className="kicker">Current Kelvin range</p><h2 id="featured-title">A closer look at the range.</h2></div><p>Explore featured products from Kelvin’s catalogue. Technical details are available on request.</p></div>
   return <section className="featured section-space" aria-labelledby="featured-title"><div className="wrap"><FeaturedCarousel items={featured} heading={heading} /><a className="text-link featured__link" href="/products.html">View the full catalogue <Arrow /></a></div></section>
 }
 
-function CataloguePage() {
+function CataloguePage({ initialPage = 1 }) {
   const [query, setQuery] = React.useState('')
-  const [family, setFamily] = React.useState(() => {
-    const requested = new URLSearchParams(window.location.search).get('family')
-    return products.some((product) => product.family === requested) ? requested : 'All'
-  })
-  const [page, setPage] = React.useState(1)
+  const [family, setFamily] = React.useState('All')
+  React.useEffect(() => {
+    const requested = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search).get('family')
+    if (products.some((product) => product.family === requested)) setFamily(requested)
+  }, [])
+  const [page, setPage] = React.useState(initialPage)
   const gridRef = React.useRef(null)
   const families = ['All', ...new Set(products.map((product) => product.family))]
   const filtered = products.filter((product) => (family === 'All' || product.family === family) && `${product.name} ${product.family} ${product.application} ${product.id}`.toLowerCase().includes(query.toLowerCase().trim()))
@@ -287,6 +288,8 @@ function CataloguePage() {
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize))
   const current = Math.min(page, pageCount)
   const visible = filtered.slice((current - 1) * pageSize, current * pageSize)
+  const isFiltered = family !== 'All' || query.trim() !== ''
+  const pageHref = (number) => `${number === 1 ? '/products.html' : `/products-page-${number}.html`}#catalogue-title`
 
   const goToPage = (next) => {
     if (next < 1 || next > pageCount) return
@@ -294,18 +297,31 @@ function CataloguePage() {
     gridRef.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' })
   }
 
-  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore Kelvin’s products across commercial cleaning, food and beverage production, life sciences hygiene, and water treatment. Request product-specific technical documents before use.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination"><button type="button" onClick={() => goToPage(current - 1)} disabled={current === 1} aria-label="Previous page"><Arrow left /></button>{Array.from({ length: pageCount }, (_, index) => <button key={index} type="button" aria-current={current === index + 1 ? 'page' : undefined} onClick={() => goToPage(index + 1)}>{index + 1}</button>)}<button type="button" onClick={() => goToPage(current + 1)} disabled={current === pageCount} aria-label="Next page"><Arrow /></button></nav>}<p className="catalogue__disclaimer">For directions, hazards, and specifications, request the matching Kelvin technical documents before use.</p></div></section><Contact /></>
+  const pageControl = (number, label, ariaLabel, disabled = false) => {
+    const common = { 'aria-label': ariaLabel, 'aria-current': current === number && !ariaLabel ? 'page' : undefined }
+    return isFiltered || disabled
+      ? <button key={ariaLabel || number} {...common} type="button" disabled={disabled} onClick={() => goToPage(number)}>{label}</button>
+      : <a key={ariaLabel || number} {...common} href={pageHref(number)}>{label}</a>
+  }
+
+  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore Kelvin’s products across commercial cleaning, food and beverage production, life sciences hygiene, and water treatment. Request product-specific technical documents before use.</p></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination">{pageControl(current - 1, <Arrow left />, 'Previous page', current === 1)}{Array.from({ length: pageCount }, (_, index) => pageControl(index + 1, index + 1))}{pageControl(current + 1, <Arrow />, 'Next page', current === pageCount)}</nav>}<p className="catalogue__disclaimer">For directions, hazards, and specifications, request the matching Kelvin technical documents before use.</p></div></section><Contact /></>
 }
 
 function PrivacyPage() {
   return <section className="privacy section-space"><div className="wrap privacy__body"><p className="kicker">Kelvin</p><h1>Privacy notice</h1><p>When you complete the enquiry form, your browser opens WhatsApp with your name, business email, company, and message in a draft. Review the draft before sending it. This website does not store the form details in a database.</p><h2>WhatsApp enquiries</h2><p>If you send the message, Kelvin receives it through WhatsApp and uses it to respond to your enquiry. WhatsApp processes information under its <a href="https://www.whatsapp.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">privacy policy</a>. Your browser or WhatsApp may retain the draft or message in its history.</p><h2>Website services</h2><p>The site is hosted by Vercel and loads fonts from Google Fonts. These services may process technical connection information when you visit.</p><h2>Contact</h2><p>For questions about your enquiry or your information, call <a href="tel:+97146081235">+971 4 608 1235</a> or message Kelvin on <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer">WhatsApp</a>.</p></div></section>
 }
 
-function App() {
-  const isCatalogue = window.location.pathname.endsWith('/products.html')
-  const isPrivacy = window.location.pathname.endsWith('/privacy.html')
-  return <><Background /><div className="site"><Header /><main>{isPrivacy ? <PrivacyPage /> : isCatalogue ? <CataloguePage /> : <><Hero /><Range /><ApplicationAreas /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
+export function App({ path = typeof window === 'undefined' ? '/' : window.location.pathname }) {
+  const cataloguePage = path.match(/^\/products(?:-page-(\d+))?\.html$/)
+  const isCatalogue = Boolean(cataloguePage)
+  const isPrivacy = path.endsWith('/privacy.html')
+  return <><Background /><div className="site"><Header /><main>{isPrivacy ? <PrivacyPage /> : isCatalogue ? <CataloguePage initialPage={Number(cataloguePage[1] || 1)} /> : <><Hero /><Range /><ApplicationAreas /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
 }
 
-createRoot(document.getElementById('root')).render(<MotionConfig reducedMotion="user"><App /></MotionConfig>)
+if (typeof document !== 'undefined') {
+  const root = document.getElementById('root')
+  const app = <MotionConfig reducedMotion="user"><App /></MotionConfig>
+  if (root.hasChildNodes()) hydrateRoot(root, app)
+  else createRoot(root).render(app)
+}
 
