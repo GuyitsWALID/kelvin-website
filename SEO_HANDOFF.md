@@ -54,15 +54,16 @@ Four live pages now map distinct industry enquiries to approved Kelvin products:
 
 The official [22 November PageSpeed Insights run](https://pagespeed.web.dev/analysis/https-kelvinchem-ae/6zpxfw6uqa?form_factor=mobile) measured **93 mobile / 100 desktop Performance**, with **100 Accessibility, Best Practices, and SEO** on both. Mobile FCP/LCP were 2.1 s, TBT 20 ms, CLS 0; desktop FCP/LCP were 0.5 s, TBT 10 ms, CLS 0.003. These are lab measurements; PageSpeed reported no real-user field data. The prior mobile 99 was a different lab run.
 
-Search Console previously showed the eight-URL sitemap as Success. Its signed-in browser controller timed out during this release, so the eight original URL statuses and Google-selected canonicals, the 12-URL sitemap read status, and query/link reports have **not** been confirmed. Bing Webmaster Tools submission is also unconfirmed. No public company/domain reference could be verified in a limited exact-match web search; that does not establish a backlink count.
+Search Console URL Inspection checked the eight original pages on 22 November. The homepage and main catalogue are **indexed** with their own URLs selected as canonical. Catalogue pages 2 and 3 and privacy are **unknown to Google**; pages 4–6 are **discovered, currently not indexed**. None of those six has a Google-selected canonical yet because none has been crawled. The existing sitemap was resubmitted, and Search Console now reports **Success**, last read 22 November, with **12 discovered pages**. Its aggregate Page indexing, Performance/queries, and Links reports are still processing. No public company/domain reference could be verified in a limited exact-match web search; that does not establish a backlink count.
+
+Bing Webmaster Tools is pending by the owner's choice. Its Google sign-in would share the Google account name, profile photo, and email with Bing.com; automatic approval review stopped that disclosure and the owner chose not to continue. No Bing property or sitemap was submitted.
 
 ## Remaining account-side checks
 
-1. In Google Search Console, inspect the eight original URLs once and record index status and Google's selected canonical. The homepage was indexed on 21 November; the main catalogue has already been requested for indexing. Investigate any actual exclusion reason before changing the site.
-2. Confirm the existing sitemap entry has read the current 12-URL XML. Resubmit the same sitemap URL if the read status remains stale. A successful sitemap does not prove indexing.
-3. Add or verify the site in Bing Webmaster Tools and submit the same sitemap URL.
-4. Monitor Search Console indexed URLs, queries, links, and Core Web Vitals as reports populate. Rerun PageSpeed after future changes to catch regressions; Interaction to Next Paint needs field data.
-5. Audit any real public company profiles against Kelvin's confirmed name, domain, telephone, and location. Kelvin has confirmed no in-person customer contact, so a Google Business Profile is ineligible under the current arrangement per [Google's eligibility rules](https://support.google.com/business/answer/13763036).
+1. Recheck the six unindexed original URLs and four industry pages after Google processes the 12-URL sitemap. Investigate an actual exclusion reason before changing the site; do not repeat the main catalogue's earlier indexing request.
+2. Monitor Search Console indexed URLs, queries, links, and Core Web Vitals as reports populate. A successful sitemap does not prove indexing. Rerun PageSpeed after future changes; Interaction to Next Paint needs field data.
+3. Resume Bing Webmaster Tools only if the owner later chooses to authorize sign-in. Then verify the domain and submit the sitemap.
+4. Audit any real public company profiles against Kelvin's confirmed name, domain, telephone, and location. Kelvin has confirmed no in-person customer contact, so a Google Business Profile is ineligible under the current arrangement per [Google's eligibility rules](https://support.google.com/business/answer/13763036).
 
 ## Content work after launch
 
