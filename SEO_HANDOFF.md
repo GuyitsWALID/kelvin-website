@@ -10,13 +10,16 @@ Updated 21 November 2026. This audit follows the [SEO Audit](https://github.com/
 - Six linked catalogue pages expose all 48 product entries in HTML, nine per page except the last. Each page has a self-canonical URL and is listed in the sitemap. The catalogue's search and filters remain interactive.
 - Draft phrases such as “concept” and “proposed” were removed from public product descriptions. Product directions and safety details still require the matching Kelvin technical documents.
 - The general robots rule allows search crawlers, including AI search crawlers. No special AI-only file or markup is required for Google AI features.
+- After deployment, the homepage, all six catalogue pages, privacy page, sitemap, robots file, and social image returned HTTP 200. The HTTP and `www` home addresses returned permanent redirects to the canonical HTTPS domain.
+
+The 21 November spot check measured about 0.38–0.54 seconds to the first byte for three HTML pages from one network location. This is a delivery check, not a Core Web Vitals or mobile rendering score. Google's public PageSpeed API returned HTTP 429 during the audit, so no PageSpeed score is reported. No Google verification TXT record was visible in public DNS; verification through another method remains unknown.
 
 ## Monday account-side checks
 
 1. Verify the `kelvinchem.ae` domain property in Google Search Console. Submit `https://kelvinchem.ae/sitemap.xml`, inspect the homepage and catalogue URL, and request indexing if eligible.
 2. Add the site to Bing Webmaster Tools and submit the same sitemap.
-3. Check the deployed homepage, all six catalogue pages, privacy page, sitemap, and social image over HTTPS. Confirm the `www` and HTTP addresses redirect to the canonical HTTPS host.
-4. Run PageSpeed Insights on mobile and desktop. Record Largest Contentful Paint, Interaction to Next Paint, and Cumulative Layout Shift before making performance changes.
+3. Inspect the homepage and catalogue on a real mobile browser after deployment, including pagination, filters, and the WhatsApp handoff.
+4. Run PageSpeed Insights on mobile and desktop when the service accepts a request. Record Largest Contentful Paint, Interaction to Next Paint, and Cumulative Layout Shift before making performance changes.
 5. If Kelvin has an eligible staffed location and an owner-approved address, set up or update its Google Business Profile. Use the same company name, phone, and location details as the website.
 
 ## Content work after launch
