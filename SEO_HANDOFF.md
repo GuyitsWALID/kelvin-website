@@ -14,9 +14,11 @@ Updated 21 November 2026. This audit follows the [SEO Audit](https://github.com/
 
 The 21 November spot check measured about 0.38–0.54 seconds to the first byte for three HTML pages from one network location. This is a delivery check, not a Core Web Vitals or mobile rendering score. Google's public PageSpeed API initially returned HTTP 429; the owner later supplied PageSpeed results from the official interface.
 
-On 21 November, the owner provided a Google Search Console screenshot of the `kelvinchem.ae` domain property. Its submitted `https://kelvinchem.ae/sitemap.xml` showed **Success**, last read the same day, with **8 discovered pages**. The live XML screenshot showed the same eight URLs. This confirms sitemap processing, not that the URLs are indexed. The account's Pages and URL Inspection reports have not been reviewed yet.
+On 21 November, the owner provided a Google Search Console screenshot of the `kelvinchem.ae` domain property. Its submitted `https://kelvinchem.ae/sitemap.xml` showed **Success**, last read the same day, with **8 discovered pages**. The live XML screenshot showed the same eight URLs. This confirms sitemap processing, not that all eight URLs are indexed.
 
 Later the same day, the owner shared the Pages report. It said **“Processing data, please check again in a day or so”** and showed no indexing totals or exclusion reasons yet. This is a new-property reporting delay, not evidence that all pages are indexed or rejected.
+
+Direct URL Inspection later confirmed that the **homepage is indexed**. The main catalogue and catalogue page 6 were still unknown to Google. A live test found the main catalogue available for indexing, and Google confirmed its indexing request entered the priority crawl queue. Performance and Links reports were still processing; Core Web Vitals had insufficient real-user data. Manual Actions and Security Issues showed no issues. See [SEO_FULL_AUDIT.md](SEO_FULL_AUDIT.md) for findings and the fix plan.
 
 The owner also ran PageSpeed Insights on the live homepage on 21 November. These are Lighthouse **lab** results; PageSpeed showed no real-user field data yet. The first run, before the performance fixes, was:
 
@@ -48,7 +50,7 @@ A repeat local Lighthouse run still could not calculate a reliable performance s
 
 ## Monday account-side checks
 
-1. In Google Search Console, revisit the Pages report once processing finishes, then inspect the homepage and catalogue URLs. Request indexing for eligible pages if needed. The domain property and sitemap submission are complete.
+1. In Google Search Console, revisit the Pages report once processing finishes, then inspect the remaining catalogue URLs and Google's selected canonicals. The homepage is indexed; the main catalogue has already been requested for indexing. The domain property and sitemap submission are complete.
 2. Add the site to Bing Webmaster Tools and submit the same sitemap.
 3. Inspect the homepage and catalogue on a real mobile browser after deployment, including pagination, filters, and the WhatsApp handoff.
 4. Monitor the Search Console Core Web Vitals report as real-user field data becomes available. Interaction to Next Paint cannot be assessed from these lab screenshots. Rerun PageSpeed after future changes to catch regressions.
