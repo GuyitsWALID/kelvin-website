@@ -111,7 +111,7 @@ function Hero() {
   return <section className="hero wrap" aria-labelledby="hero-title">
     <div className="hero__body">
       <motion.p className="hero__eyebrow" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>Dubai · Cleaning & disinfectant chemistry</motion.p>
-      <motion.h1 id="hero-title" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.08 }}>A cleaner future starts with the work we do today.</motion.h1>
+      <h1 id="hero-title">A cleaner future starts with the work we do today.</h1>
       <motion.p className="hero__intro" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.16 }}>Kelvin provides professional cleaning and disinfectant products, with an office in Dubai and manufacturing in KEZAD, Abu Dhabi. Explore the range for your business.</motion.p>
       <motion.div className="hero__actions" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.24 }}>
         <a className="button button--blue" href="/products.html">Explore the range <Arrow diagonal /></a>
