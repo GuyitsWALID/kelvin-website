@@ -205,3 +205,10 @@ h1{font-size:clamp(58px,6.7vw,106px);line-height:1.03;letter-spacing:-.072em;fon
 @keyframes anatomy-pump{0%,15%,65%,100%{transform:translateY(0)}38%{transform:translateY(12px)}}
 @media(max-width:580px){.range__visual-inner{padding:8px 16px 22px}.range-anatomy .iso-svg{max-height:260px}}
 .privacy{min-height:70vh}.privacy__body{max-width:820px}.privacy h1{font-size:clamp(48px,7vw,80px);margin-bottom:40px}.privacy h2{font-size:25px;margin:40px 0 12px}.privacy p{color:#d1e0e9;line-height:1.7}.privacy a{text-decoration:underline;text-underline-offset:3px}
+
+.breadcrumbs{padding-top:24px;color:#d1e0e9;font-size:14px;line-height:1.6}
+.breadcrumbs ol{display:flex;flex-wrap:wrap;gap:8px 12px;list-style:none;padding:0;margin:0}
+.breadcrumbs li{display:flex;align-items:baseline;gap:12px}
+.breadcrumbs li+li::before{content:'/';color:#79ceff}
+.breadcrumbs a{text-decoration:underline;text-underline-offset:4px}
+.breadcrumbs [aria-current]{color:#fff}

@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Open `http://127.0.0.1:5173/`, `/products.html`, or `/privacy.html`. Run `npm run build` to produce the home page, six linked catalogue pages, and privacy notice in `dist/`. The build renders their page content into HTML before deployment, then hydrates the interactive React site in the browser.
+Open `http://127.0.0.1:5173/`, `/products.html`, or `/privacy.html`. Run `npm run build` to produce the home page, six linked catalogue pages, four industry pages, and privacy notice in `dist/`. The build also runs `npm run check:seo` to verify the generated pages, metadata, sitemap, breadcrumbs, catalogue coverage, and internal links. The build renders their page content into HTML before deployment, then hydrates the interactive React site in the browser.
 
 ## Catalogue and enquiries
 

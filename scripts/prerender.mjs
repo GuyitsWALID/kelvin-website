@@ -3,6 +3,13 @@ import { createElement } from 'react'
 import { renderToString } from 'react-dom/server'
 import { MotionConfig } from 'motion/react'
 import { createServer } from 'vite'
+import { breadcrumbData } from '../src/seo.mjs'
+
+function addBreadcrumbData(html, path) {
+  const data = breadcrumbData(path)
+  if (!data) return html
+  return html.replace('</head>', `<script type="application/ld+json">${JSON.stringify(data).replaceAll('<', '\\u003c')}</script></head>`)
+}
 
 const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error', optimizeDeps: { noDiscovery: true } })
 
@@ -16,7 +23,7 @@ try {
     if (!html.includes('<div id="root"></div>')) throw new Error(`Missing root in ${page}`)
     const body = renderToString(createElement(MotionConfig, { reducedMotion: 'user' }, createElement(App, { path })))
     if (!body.includes('<h1')) throw new Error(`Missing page content in ${page}`)
-    await writeFile(file, html.replace('<div id="root"></div>', `<div id="root">${body}</div>`))
+    await writeFile(file, addBreadcrumbData(html, path).replace('<div id="root"></div>', `<div id="root">${body}</div>`))
   }
   const products = JSON.parse(await readFile(new URL('../src/catalogue.json', import.meta.url), 'utf8'))
   const pageDescriptions = {
@@ -36,7 +43,7 @@ try {
       .replace('Explore Kelvin products by application and industry.', pageDescriptions[number])
     const body = renderToString(createElement(MotionConfig, { reducedMotion: 'user' }, createElement(App, { path: `/${page}` })))
     if (!body.includes(products[(number - 1) * 9].name)) throw new Error(`Wrong catalogue content in ${page}`)
-    await writeFile(new URL(`../dist/${page}`, import.meta.url), html.replace('<div id="root"></div>', `<div id="root">${body}</div>`))
+    await writeFile(new URL(`../dist/${page}`, import.meta.url), addBreadcrumbData(html, `/${page}`).replace('<div id="root"></div>', `<div id="root">${body}</div>`))
   }
 } finally {
   await vite.close()

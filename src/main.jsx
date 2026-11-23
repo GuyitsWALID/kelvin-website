@@ -3,6 +3,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client'
 import { AnimatePresence, MotionConfig, motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'motion/react'
 import { startDotField } from './dotField'
 import products from './catalogue.json'
+import { breadcrumbsFor } from './seo.mjs'
 import RangeAnatomy from './anatomy/RangeAnatomy'
 import { whatsappEnquiryUrl, whatsappNumber } from './whatsapp'
 import './styles.css'
@@ -148,13 +149,19 @@ function Header() {
   </header>
 }
 
+function Breadcrumbs({ path }) {
+  const crumbs = breadcrumbsFor(path)
+  if (!crumbs.length) return null
+  return <nav className="breadcrumbs wrap" aria-label="Breadcrumb"><ol>{crumbs.map((crumb, index) => <li key={crumb.path}>{index === crumbs.length - 1 ? <span aria-current="page">{crumb.name}</span> : <a href={crumb.path}>{crumb.name}</a>}</li>)}</ol></nav>
+}
+
 function Hero() {
   const reduceMotion = useReducedMotion()
-  const initial = reduceMotion ? false : { opacity: 0, y: 24 }
+  const initial = reduceMotion ? false : { y: 24 }
   return <section className="hero wrap" aria-labelledby="hero-title">
     <div className="hero__body">
       <motion.p className="hero__eyebrow" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>Dubai · Cleaning & disinfectant chemistry</motion.p>
-      <h1 id="hero-title">A cleaner future starts with the work we do today.</h1>
+      <h1 id="hero-title">Professional cleaning chemicals in the UAE.</h1>
       <motion.p className="hero__intro" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.16 }}>Kelvin provides professional cleaning and disinfectant products, with an office in Dubai and manufacturing in KEZAD, Abu Dhabi. Explore the range for your business.</motion.p>
       <motion.div className="hero__actions" initial={initial} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.24 }}>
         <a className="button button--blue" href="/products.html">Explore the range <Arrow diagonal /></a>
@@ -358,7 +365,7 @@ function CataloguePage({ initialPage = 1 }) {
       : <a key={ariaLabel || number} {...common} href={pageHref(number)}>{label}</a>
   }
 
-  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Products for the work behind every clean space.</h1><p>Explore Kelvin’s products across commercial cleaning, food and beverage production, life sciences hygiene, and water treatment. Request product-specific technical documents before use.</p><div className="catalogue-hero__industries" aria-label="Browse industry pages">{industryPages.map((page) => <a key={page.path} href={page.path}>{page.name}<Arrow diagonal /></a>)}</div></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination">{pageControl(current - 1, <Arrow left />, 'Previous page', current === 1)}{Array.from({ length: pageCount }, (_, index) => pageControl(index + 1, index + 1))}{pageControl(current + 1, <Arrow />, 'Next page', current === pageCount)}</nav>}<p className="catalogue__disclaimer">For directions, hazards, and specifications, request the matching Kelvin technical documents before use.</p></div></section><Contact /></>
+  return <><section className="catalogue-hero"><div className="wrap"><p className="kicker">Kelvin product catalogue</p><h1>Professional cleaning products for UAE businesses.</h1><p>Explore Kelvin’s products across commercial cleaning, food and beverage production, life sciences hygiene, and water treatment. Request product-specific technical documents before use.</p><div className="catalogue-hero__industries" aria-label="Browse industry pages">{industryPages.map((page) => <a key={page.path} href={page.path}>{page.name}<Arrow diagonal /></a>)}</div></div></section><section className="catalogue section-space" aria-labelledby="catalogue-title"><div className="wrap"><div className="catalogue__head"><div><p className="kicker">Browse by application</p><h2 id="catalogue-title">The Kelvin range</h2></div><label className="catalogue__search"><span>Search products</span><input type="search" value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} placeholder="Name, task, or code" /></label></div><div className="catalogue__filters" aria-label="Product family filter">{families.map((option) => <button type="button" key={option} aria-pressed={family === option} onClick={() => { setFamily(option); setPage(1) }}>{option}</button>)}</div><p className="catalogue__count" role="status">{filtered.length} {filtered.length === 1 ? 'product' : 'products'} · Page {current} of {pageCount}</p>{visible.length ? <div className="catalogue__grid" ref={gridRef}>{visible.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <p className="catalogue__empty">No products match that search. Try another name or category.</p>}{pageCount > 1 && filtered.length > 0 && <nav className="catalogue__pagination" aria-label="Catalogue pagination">{pageControl(current - 1, <Arrow left />, 'Previous page', current === 1)}{Array.from({ length: pageCount }, (_, index) => pageControl(index + 1, index + 1))}{pageControl(current + 1, <Arrow />, 'Next page', current === pageCount)}</nav>}<p className="catalogue__disclaimer">For directions, hazards, and specifications, request the matching Kelvin technical documents before use.</p></div></section><Contact /></>
 }
 
 function PrivacyPage() {
@@ -370,7 +377,7 @@ export function App({ path = typeof window === 'undefined' ? '/' : window.locati
   const isCatalogue = Boolean(cataloguePage)
   const isPrivacy = path.endsWith('/privacy.html')
   const industry = industryPages.find((page) => page.path === path)
-  return <><Background /><div className="site"><Header /><main>{isPrivacy ? <PrivacyPage /> : isCatalogue ? <CataloguePage initialPage={Number(cataloguePage[1] || 1)} /> : industry ? <IndustryPage page={industry} /> : <><Hero /><Range /><ApplicationAreas /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
+  return <><Background /><div className="site"><Header /><main><Breadcrumbs path={path} />{isPrivacy ? <PrivacyPage /> : isCatalogue ? <CataloguePage initialPage={Number(cataloguePage[1] || 1)} /> : industry ? <IndustryPage page={industry} /> : <><Hero /><Range /><ApplicationAreas /><Featured /><About /><Principles /><Faq /><Contact /></>}</main><Footer /></div></>
 }
 
 if (typeof document !== 'undefined') {
